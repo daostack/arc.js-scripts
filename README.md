@@ -32,7 +32,7 @@ npm run build
       "providerUrl": "https://kovan.infura.io/..."
     }</pre>
       </dd>
-    <dt>pathToScript</dt><dd>the path to your JavaScript script file</dd>
+    <dt>pathToScript</dt><dd>the path to your JavaScript script file.  Can be absolute or relative to build/scripts.</dd>
     <dt>methodNameInScript</dt><dd>the name of an exported method to invoke in your script</dd>
     </dl>
 

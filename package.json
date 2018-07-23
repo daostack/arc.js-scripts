@@ -5,7 +5,7 @@
   "main": "runWithHdProvider.js",
   "scripts": {
     "build": "tsc --outDir build",
-    "script": "node ./build/runWithHdProvider.js",
+    "script": "node ./build/scripts/runWithHdProvider.js",
     "ganache": "npm explore @daostack/arc.js -- npm start ganache",
     "migrateContracts": "npm explore @daostack/arc.js -- npm start migrateContracts",
     "createGenesisDao": "npm explore @daostack/arc.js -- npm start createGenesisDao"

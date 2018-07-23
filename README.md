@@ -40,7 +40,6 @@ npm run build
 
 ## Notes
 
-* Any 
 * Your method may call `InitializeArcJs` for cases where you want to use Arc contracts (see scripts/example.ts).
 
 * Typescript is not necessary, but if you want you can easily create scripts using TypeScript by placing your .ts files in the "scripts" folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build" folder.

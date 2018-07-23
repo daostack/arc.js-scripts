@@ -30,7 +30,8 @@
   },
   "homepage": "https://github.com/dkent600/arc.js-scripts#readme",
   "dependencies": {
-    "@daostack/arc.js": "file:../arc.js/daostack-arc.js-0.0.0-alpha.69.tgz"
+    "@daostack/arc.js": "file:../arc.js/daostack-arc.js-0.0.0-alpha.69.tgz",
+    "growl": "~> 1.10.0"
   },
   "devDependencies": {
     "typescript": "^2.9.2"

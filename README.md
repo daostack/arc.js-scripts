@@ -49,3 +49,5 @@ npm run build
     In any case, you can create your JavaScript script files however you want.
 
 * The build command (`npm run build`) will compile TypeScript files if any are found in a "local_scripts" folder that you may create for yourself.  This folder would be excluded from the git repo and npm package.  Generated JavaScript files will appear in the "build/local_scripts" folder.
+
+* You can start ganache with the command `npm run ganache`, migrate Arc contracts with `npm run migrateContracts` and create a Genesis DAO with `npm run createGenesisDao`.

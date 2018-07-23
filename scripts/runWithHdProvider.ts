@@ -4,35 +4,8 @@ import { Web3 } from "web3";
 import { Utils } from "@daostack/arc.js";
 import { promisify } from 'util';
 
-/**
- * Call the given method in the given script connecting to a chain network according
- * to the given providerConfiguration.
- *
- * Example from the arc.js root:
- *
- *   `node ./dist/scripts/runWithHdProvider.js [pathToProviderConfig] [pathToScript] [methodNameInScript]`
- *
- * The providerConfiguration looks something like this:
- *
- * ```
- *   {
- *    "mnemonic": "...",
- *    "providerUrl": "https://kovan.infura.io/..."
- *   }
- * ```
- *
- * The method will be invoked with two parameters: `web3` and the name of the network in lowercase.
- * `web3` will also be global.
- *
- * The method must return a promise that it has completed.
- *
- * The method may invoke `InitializeArcJs` to use Arc.js to access Arc contracts.
- *
- * If the script shows provider status output but then exits without executing your script,
- * check to ensure that a node is listening at the Url given in your provider configuration.
- */
 const usage = (): void => {
-  console.log(`usage: 'node runWithProvider.js [providerConfiguration] [script] [method]'`);
+  console.log(`usage: 'node runWithProvider.js [providerConfiguration] [script] [method] [optionalParameters]'`);
   console.log(`  providerConfiguration: path to json provider configuration file`);
   console.log(`  script: path to javascript script file`);
   console.log(`  method: name of the method to execute`);
@@ -77,7 +50,9 @@ try {
 
   const runScript = async (): Promise<void> => {
 
-    await connectToNetwork();
+    if (providerConfigPath.toLowerCase() !== "none") {
+      await connectToNetwork();
+    }
 
     /**
      * Note that if no node is listening at the provider's url, particularly with ganache, this

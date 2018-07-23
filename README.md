@@ -18,7 +18,7 @@ npm run build
  
     See scripts/example.ts for an example of a script. Note that `npm run build` will have converted example.ts into the required JavaScript, in case you want to try out the example.  The generated JavaScript will be found in the "build/scripts" directory.
     
-    When you refer to the script on the command line (see below), you must refer to the JavaScript file, not the typescript.
+    When you refer to the script on the command line (see below), you must refer to the JavaScript file, not the TypeScript.
 
 2. To execute your new script, run:
 
@@ -28,14 +28,19 @@ npm run build
 
     <dl>
     <dt>pathToProviderConfig</dt>
-    <dd>A json file containing the provider configuration, looking something like this:
+    <dd>A json file containing an truffle-hdwallet-provider configuration, looking something like this:
       <pre>
     {
       "mnemonic": "...",
       "providerUrl": "https://kovan.infura.io/..."
     }</pre>
+    
+    If you supply "none" instead of a json file for `pathToProviderConfig`, then the script will not try to load a truffle-hdwallet-provider 
+    and will instead run against a node as configured in the Arc.js global configuration settings described [here](https://daostack.github.io/arc.js/Home/#use-default-network-settings) in the Arc.js documentation.
+    
       </dd>
     <dt>pathToScript</dt><dd>the path to your JavaScript script file.  Can be absolute or relative to build/scripts.</dd>
+    
     <dt>methodNameInScript</dt><dd>the name of an exported method to invoke in your script</dd>
     <dt>optionalParameters</dt><dd>optional parameters that, if present, will be passed on as arguments to your script method</dd>
     </dl>
@@ -44,10 +49,10 @@ npm run build
 
 * Your method may call `InitializeArcJs` for cases where you want to use Arc contracts (see scripts/example.ts).
 
-* Typescript is not necessary, but if you want you can easily create scripts using TypeScript by placing your .ts files in a "local_scripts" folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build" folder.
+* TypeScript is not necessary, but if you want you can easily create scripts using TypeScript by placing your .ts files in a "local_scripts" folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build" folder.
 
     In any case, you can create your JavaScript script files however you want.
 
 * The build command (`npm run build`) will compile TypeScript files if any are found in a "local_scripts" folder that you may create for yourself.  This folder would be excluded from the git repo and npm package.  Generated JavaScript files will appear in the "build/local_scripts" folder.
 
-* You can start ganache with the command `npm run ganache`, migrate Arc contracts with `npm run migrateContracts` and create a Genesis DAO with `npm run createGenesisDao`.
+* You can start ganache with the command `npm run ganache`, migrate Arc contracts with `npm run migrateContracts` and create a Genesis DAO with `npm run createGenesisDao`.  See more about Arc.js contract migration in the Arc.js documentation [here](https://daostack.github.io/arc.js/Migration/).

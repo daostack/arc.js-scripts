@@ -2,6 +2,7 @@
 /* tslint:disable:no-var-requires */
 import { Web3 } from "web3";
 import { Utils } from "@daostack/arc.js";
+import { promisify } from 'util';
 
 /**
  * Call the given method in the given script connecting to a chain network according
@@ -86,6 +87,8 @@ try {
     return Utils.getWeb3()
       .then(async (web3: Web3) => {
         const networkName = await Utils.getNetworkName();
+        (global as any).accounts = await promisify(web3.eth.getAccounts)();
+
         console.log(`Executing ${method}`);
 
         return script[method](web3, networkName)

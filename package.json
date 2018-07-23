@@ -5,7 +5,10 @@
   "main": "runWithHdProvider.js",
   "scripts": {
     "build": "tsc --outDir build",
-    "script": "node ./build/runWithHdProvider.js"
+    "script": "node ./build/runWithHdProvider.js",
+    "ganache": "npm explore @daostack/arc.js -- npm start ganache",
+    "migrateContracts": "npm explore @daostack/arc.js -- npm start migrateContracts",
+    "createGenesisDao": "npm explore @daostack/arc.js -- npm start createGenesisDao"
   },
   "repository": {
     "type": "git",
@@ -35,10 +38,9 @@
   ],
   "dependencies": {
     "@daostack/arc.js": "0.0.0-alpha.69",
-    "growl": "~> 1.10.0"
-  },
-  "devDependencies": {
     "@types/node": "^10.5.2",
+    "es6-promisify": "^6.0.0",
+    "growl": "~> 1.10.0",
     "typescript": "^2.9.2"
   }
 }

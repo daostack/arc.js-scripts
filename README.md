@@ -12,7 +12,9 @@ npm run build
 ## To Run a Script
 
 1. Create a JavaScript file that exports a method that returns a promise that it is complete.
- When arc.js-scripts runs your script, the method will be invoked with two parameters: `web3` and the name of the network in lowercase. (Note that `web3` will also be global.)
+ When arc.js-scripts runs your script, the method will be invoked with two parameters: `web3` and the name of the network in lowercase
+ 
+ Two globals are also available: `web3` and `accounts`.
  
     See scripts/example.ts for an example of a script. Note that `npm run build` will have converted test.ts into the required JavaScript, in case you want to try the test out.  The generated JavaScript will be found in the "build" directory.  You must run the JavaScript, not the typescript.
 2. To execute your new script, run:

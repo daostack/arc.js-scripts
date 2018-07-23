@@ -4,7 +4,9 @@
   "description": "scripts that run against @daostack/arc.js",
   "main": "runWithHdProvider.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --outDir build",
+    "script": "node ./node_modules/@daostack/arc.js/dist/scripts/runWithHdProvider.js",
+    "test": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,9 @@
   },
   "homepage": "https://github.com/dkent600/arc.js-scripts#readme",
   "dependencies": {
-    "@daostack/arc.js": "0.0.0-alpha.69"
+    "@daostack/arc.js": "file:../arc.js/daostack-arc.js-0.0.0-alpha.69.tgz"
+  },
+  "devDependencies": {
+    "typescript": "^2.9.2"
   }
 }

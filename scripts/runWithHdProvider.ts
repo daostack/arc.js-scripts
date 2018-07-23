@@ -77,7 +77,7 @@ try {
 
   const runScript = async (): Promise<void> => {
 
-    // await connectToNetwork();
+    await connectToNetwork();
 
     /**
      * Note that if no node is listening at the provider's url, particularly with ganache, this

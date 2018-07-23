@@ -5,8 +5,7 @@
   "main": "runWithHdProvider.js",
   "scripts": {
     "build": "tsc --outDir build",
-    "script": "node ./node_modules/@daostack/arc.js/dist/scripts/runWithHdProvider.js",
-    "test": "npm run build"
+    "script": "node ./build/runWithHdProvider.js"
   },
   "repository": {
     "type": "git",
@@ -30,10 +29,11 @@
   },
   "homepage": "https://github.com/dkent600/arc.js-scripts#readme",
   "dependencies": {
-    "@daostack/arc.js": "file:../arc.js/daostack-arc.js-0.0.0-alpha.69.tgz",
+    "@daostack/arc.js": "0.0.0-alpha.69",
     "growl": "~> 1.10.0"
   },
   "devDependencies": {
+    "@types/node": "^10.5.2",
     "typescript": "^2.9.2"
   }
 }

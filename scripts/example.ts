@@ -4,7 +4,7 @@ import {
   LogLevel
 } from "@daostack/arc.js";
 
-export const test = async (web3, networkName: string): Promise<void> => {
+export const exampleMethod = async (web3, networkName: string): Promise<void> => {
   console.log(`in test against ${networkName}`);
   LoggingService.logLevel = LogLevel.all;
   await InitializeArcJs();

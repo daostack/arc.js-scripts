@@ -14,10 +14,11 @@
     ]
   },
   "include": [
-    "scripts/**/*"
+    "scripts/**/*",
+    "custom_typings/system.d.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "build"
   ]
 }

@@ -1,11 +1,22 @@
 # arc.js-scripts
 Scripts that run against @daostack/arc.js
 
-# Run a script
+## Installation
+
+Run the following command to install and build arc.js-scripts:
+
+```
+npm install @arc.js-scripts
+npm run build
+```
+
+## To Run a Script
 
 1. Create a javascript file that exports a method that returns a promise that it is complete.
- The method will be invoked with two parameters: `web3` and the name of the network in lowercase. Note that `web3` will also be global. See scripts/test.ts for an example (note that `npm run build` converts test.ts into the required javascript, in case you want to try it out).
-2. To execute your script, run:
+ When arc.js-scripts runs your script, the method will be invoked with two parameters: `web3` and the name of the network in lowercase. (Note that `web3` will also be global.)
+ 
+    See scripts/example.ts for an example of a script. Note that `npm run build` will have converted test.ts into the required javascript, in case you want to try the test out.  The generated javascript will be found in the "build" directory.  You must run the javascript, not the typescript.
+2. To execute your new script, run:
 
     `npm run script [pathToProviderConfig] [pathToScript] [methodNameInScript]`
 

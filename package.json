@@ -28,6 +28,11 @@
     "url": "https://github.com/dkent600/arc.js-scripts/issues"
   },
   "homepage": "https://github.com/dkent600/arc.js-scripts#readme",
+  "files": [
+    "scripts/",
+    "custom_typings/",
+    "tsconfig.json"
+  ],
   "dependencies": {
     "@daostack/arc.js": "0.0.0-alpha.69",
     "growl": "~> 1.10.0"

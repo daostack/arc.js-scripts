@@ -42,3 +42,5 @@ npm run build
 * Typescript is not necessary, but if you want you can easily create scripts using TypeScript by placing your .ts files in the "scripts" folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build" folder.
 
     In any case, you can create your JavaScript script files however you want.
+
+* The build command (`npm run build`) will compile TypeScript files if any are found in a `local-scripts` folder that you may create for yourself.  This folder would be excluded from the git repo and npm package.  Generated JavaScript files will appear in the "build" folder.

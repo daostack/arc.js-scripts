@@ -49,7 +49,7 @@ const exit = (code: number = 0): void => {
   process.exit(code);
 };
 
-if (process.argv.length !== 5) {
+if (process.argv.length < 5) {
   usage();
   exit(1);
 }
@@ -91,7 +91,7 @@ try {
 
         console.log(`Executing ${method}`);
 
-        return script[method](web3, networkName)
+        return script[method](web3, networkName, ...process.argv.slice(5))
           .then(() => {
             console.log(`Completed ${method}`);
             exit(0);

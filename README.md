@@ -3,10 +3,9 @@ Scripts that run against @daostack/arc.js
 
 ## Installation
 
-Run the following command to install and build arc.js-scripts:
+Clone or fork the arc.js-scripts repository from GitHub, then:
 
 ```
-npm install @arc.js-scripts
 npm run build
 ```
 

@@ -3,8 +3,6 @@ Scripts that run against @daostack/arc.js
 
 # Run a script
 
-<style>dt { font-weight: bold}</style>
-
 1. Create a javascript file that exports a method that returns a promise that it is complete.
  The method will be invoked with two parameters: `web3` and the name of the network in lowercase. Note that `web3` will also be global. See scripts/test.ts for an example (note that `npm run build` converts test.ts into the required javascript, in case you want to try it out).
 2. To execute your script, run:

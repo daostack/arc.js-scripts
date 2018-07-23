@@ -16,7 +16,7 @@ npm run build
  
     Two globals are also available: `web3` and `accounts`.
  
-    See scripts/example.ts for an example of a script. Note that `npm run build` will have converted example.ts into the required JavaScript, in case you want to try out the example.  The generated JavaScript will be found in the "build" directory. You must run the JavaScript, not the typescript.
+    See scripts/example.ts for an example of a script. Note that `npm run build` will have converted example.ts into the required JavaScript, in case you want to try out the example.  The generated JavaScript will be found in the "build/scripts" directory. You must run the JavaScript, not the typescript.
 
 2. To execute your new script, run:
 
@@ -42,8 +42,8 @@ npm run build
 
 * Your method may call `InitializeArcJs` for cases where you want to use Arc contracts (see scripts/example.ts).
 
-* Typescript is not necessary, but if you want you can easily create scripts using TypeScript by placing your .ts files in the "scripts" folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build" folder.
+* Typescript is not necessary, but if you want you can easily create scripts using TypeScript by placing your .ts files in a "local_scripts" folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build" folder.
 
     In any case, you can create your JavaScript script files however you want.
 
-* The build command (`npm run build`) will compile TypeScript files if any are found in a `local-scripts` folder that you may create for yourself.  This folder would be excluded from the git repo and npm package.  Generated JavaScript files will appear in the "build" folder.
+* The build command (`npm run build`) will compile TypeScript files if any are found in a "local_scripts" folder that you may create for yourself.  This folder would be excluded from the git repo and npm package.  Generated JavaScript files will appear in the "build/local_scripts" folder.

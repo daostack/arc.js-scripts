@@ -16,7 +16,9 @@ npm run build
  
     Two globals are also available: `web3` and `accounts`.
  
-    See scripts/example.ts for an example of a script. Note that `npm run build` will have converted example.ts into the required JavaScript, in case you want to try out the example.  The generated JavaScript will be found in the "build/scripts" directory. You must run the JavaScript, not the typescript.
+    See scripts/example.ts for an example of a script. Note that `npm run build` will have converted example.ts into the required JavaScript, in case you want to try out the example.  The generated JavaScript will be found in the "build/scripts" directory.
+    
+    When you refer to the script on the command line (see below), you must refer to the JavaScript file, not the typescript.
 
 2. To execute your new script, run:
 

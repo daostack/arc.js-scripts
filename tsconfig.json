@@ -15,7 +15,7 @@
   },
   "include": [
     "scripts/**/*",
-    "local-scripts/**/*",
+    "local_scripts/**/*",
     "custom_typings/system.d.ts"
   ],
   "exclude": [

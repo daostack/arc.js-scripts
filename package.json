@@ -1,0 +1,33 @@
+{
+  "name": "arc.js-scripts",
+  "version": "0.0.0-alpha.0",
+  "description": "scripts that run against @daostack/arc.js",
+  "main": "runWithHdProvider.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkent600/arc.js-scripts.git"
+  },
+  "keywords": [
+    "DAOstack",
+    "Arc.js",
+    "Arc",
+    "Ethereum",
+    "blockchain",
+    "DAO",
+    "javascript",
+    "smart",
+    "contracts"
+  ],
+  "author": "Doug Kent",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/dkent600/arc.js-scripts/issues"
+  },
+  "homepage": "https://github.com/dkent600/arc.js-scripts#readme",
+  "dependencies": {
+    "@daostack/arc.js": "0.0.0-alpha.69"
+  }
+}

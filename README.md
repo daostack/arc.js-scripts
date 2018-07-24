@@ -59,10 +59,10 @@ npm run build
 * the "scripts" directory contains some useful scripts that you can use, for example:
 
 
-Script | Purpose
----------|----------
- daoCreate | create a DAO given a json spec for the DAO
- daoListParticipants | list participants in the given DAO, by reputation
- ethTransfer | transfer ETH from one account to another
- tokenTransfer | transfer tokens from one account to another
- tokenMint | mint tokens to an account
+    Script | Purpose
+    ---------|----------
+    daoCreate | create a DAO given a json spec for the DAO
+    daoListParticipants | list participants in the given DAO, by reputation
+    ethTransfer | transfer ETH from one account to another
+    tokenTransfer | transfer tokens from one account to another
+    tokenMint | mint tokens to an account

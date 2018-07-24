@@ -73,12 +73,12 @@ try {
           })
           .catch((ex: any) => {
             console.log(`Error in ${method}: ${ex}`);
-            exit(-1);
+            exit(2);
           });
       })
       .catch((ex: any) => {
         console.log(`Error: ${ex}`);
-        exit(-1);
+        exit(2);
       });
   };
 

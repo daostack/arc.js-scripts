@@ -6,10 +6,12 @@
   "scripts": {
     "clean": "rimraf build/**/*",
     "build": "npm run clean && tsc --outDir build",
-    "script": "node ./build/scripts/runWithHdProvider.js",
     "ganache": "npm explore @daostack/arc.js -- npm start ganache",
     "migrateContracts": "npm explore @daostack/arc.js -- npm start migrateContracts",
     "createGenesisDao": "npm explore @daostack/arc.js -- npm start createGenesisDao"
+  },
+  "bin": {
+    "arcscript": "./scripts/runScript.js"
   },
   "repository": {
     "type": "git",
@@ -40,9 +42,13 @@
   "dependencies": {
     "@daostack/arc.js": "0.0.0-alpha.69",
     "@types/node": "^10.5.2",
+    "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5",
     "es6-promisify": "^6.0.0",
+    "fs-extra": "^7.0.0",
     "growl": "~> 1.10.0",
     "rimraf": "^2.6.2",
-    "typescript": "^2.9.2"
+    "typescript": "^2.9.2",
+    "valid-url": "^1.0.9"
   }
 }

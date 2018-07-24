@@ -1,35 +1,125 @@
 /* tslint:disable:no-console */
 /* tslint:disable:no-var-requires */
 import { Web3 } from "web3";
-import { Utils } from "@daostack/arc.js";
+import { Utils, ConfigService } from "@daostack/arc.js";
 import { promisify } from 'util';
+const fs = require("fs-extra");
+const commandLineArgs = require('command-line-args')
+const validUrl = require('valid-url');
+const commandLineUsage = require('command-line-usage');
+
+class FileDetails {
+  public filename: string;
+  public exists: boolean;
+
+  constructor(filename) {
+    this.filename = filename
+    this.exists = fs.existsSync(filename)
+  }
+}
+
+class UrlDetails {
+  public url: string;
+  public isValid: boolean;
+
+  constructor(url) {
+    this.url = url
+    this.isValid = validUrl.isUri(url);
+  }
+}
+
+const optionDefinitions = [
+  { name: 'help', type: Boolean },
+  { name: 'provider', alias: 'p', type: provider => new FileDetails(provider), description: "path to json provider configuration file, or local Url" },
+  { name: 'script', alias: 's', type: script => new FileDetails(script), description: "path to javascript script file" },
+  { name: 'method', alias: 'm', type: String, description: "name of the method to execute" },
+  { name: 'port', alias: 'r', type: Number, description: "node client port" },
+  { name: 'url', alias: 'u', type: url => new UrlDetails(url), description: "node client url" },
+  { name: 'extraParameters', multiple: true, defaultOption: true, description: "optional parameters that if present will be passed as arguments to your script method" }
+];
+
+const options = commandLineArgs(optionDefinitions);
 
 const usage = (): void => {
-  console.log(`usage: 'node runWithProvider.js [providerConfiguration] [script] [method] [optionalParameters]'`);
-  console.log(`  providerConfiguration: path to json provider configuration file, or "local"`);
-  console.log(`  script: path to javascript script file`);
-  console.log(`  method: name of the method to execute`);
+  const sections = [
+    {
+      header: 'runWithHdProvider',
+      content: 'Run scripts agains DAOstack Arc.js.'
+    },
+    {
+      header: 'Options',
+      optionList: optionDefinitions
+    }
+  ];
+
+  const usage = commandLineUsage(sections);
+  console.log(usage);
+  // console.log(`usage: 'node runWithProvider.js [providerConfiguration] [script] [method] [optionalParameters]'`);
+  // console.log(`  providerConfiguration: path to json provider configuration file, or local Url`);
+  // console.log(`  script: path to javascript script file`);
+  // console.log(`  method: name of the method to execute`);
 };
 
 let provider;
 
 const exit = (code: number = 0): void => {
   if (provider) {
-    console.log("stopping provider engine...");
+    // console.log("stopping provider engine...");
     // see: https://github.com/trufflesuite/truffle-hdwallet-provider/issues/46
     provider.engine.stop();
   }
   process.exit(code);
 };
 
-if (process.argv.length < 5) {
+// console.dir(options);
+
+if (options.help) {
   usage();
   exit();
 }
 
-const providerConfigPath = process.argv[2];
-const script = require(process.argv[3]);
-const method = process.argv[4];
+let providerConfigPath;
+let url;
+let port;
+
+if (options.provider) {
+  if (!options.provider.exists) {
+    console.log(`provider file does not exist`);
+    exit();
+  }
+  providerConfigPath = options.provider.filename;
+}
+
+if (options.url) {
+  if (providerConfigPath) {
+    console.log(`can't supply provider and url at the same`);
+    exit();
+  }
+  if (!options.url.isValid) {
+    console.log(`url is not a valid url`);
+    exit();
+  }
+  if (!options.port) {
+    console.log(`you must provide port if you provide a url`);
+    exit();
+  }
+  url = options.url.url;
+}
+
+if (options.port) {
+  if (providerConfigPath) {
+    console.log(`can't supply provider and port at the same`);
+    exit();
+  }
+  if (!options.url) {
+    console.log(`you must provide url if you provide a port`);
+    exit();
+  }
+  port = options.port;
+}
+
+const script = require(options.script.filename);
+const method = options.method;
 
 const connectToNetwork = async (): Promise<void> => {
   const webConstructor = require("web3");
@@ -37,6 +127,7 @@ const connectToNetwork = async (): Promise<void> => {
   let providerConfig;
 
   console.log(`providerConfig at: ${providerConfigPath}`);
+
   providerConfig = require(providerConfigPath);
 
   const HDWalletProvider = require("truffle-hdwallet-provider");
@@ -50,8 +141,11 @@ try {
 
   const runScript = async (): Promise<void> => {
 
-    if (providerConfigPath.toLowerCase() !== "local") {
+    if (providerConfigPath) {
       await connectToNetwork();
+    } else {
+      ConfigService.set("providerUrl", url);
+      ConfigService.set("providerPort", port);
     }
 
     /**
@@ -66,7 +160,7 @@ try {
 
         console.log(`Executing ${method}`);
 
-        return script[method](web3, networkName, ...process.argv.slice(5))
+        return script[method](web3, networkName, ...options.extraParameters)
           .then(() => {
             console.log(`Completed ${method}`);
             exit();

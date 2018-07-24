@@ -46,7 +46,7 @@ export const list = async (web3: Web3, networkName: string, avatar: Address): Pr
   let dao: DAO = await DAO.at(avatar);
 
   // TODO: let DAO do this, when available
-  const participants = await getParticipants(dao);
+  const participants = await getParticipants(dao, web3);
 
   participants.sort((a: Participant, b: Participant): number => {
     return (b.reputation.sub(a.reputation)).toNumber();
@@ -77,7 +77,7 @@ export interface ReputationMintEventResult {
   _amount: BigNumber;
 }
 
-const getParticipants = async (dao: DAO): Promise<Array<Participant>> => {
+const getParticipants = async (dao: DAO, web3: Web3): Promise<Array<Participant>> => {
 
   const addresses = new Set<Address>();
   let participants: Array<Participant>;

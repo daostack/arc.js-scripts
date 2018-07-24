@@ -6,7 +6,7 @@ import { promisify } from 'util';
 
 const usage = (): void => {
   console.log(`usage: 'node runWithProvider.js [providerConfiguration] [script] [method] [optionalParameters]'`);
-  console.log(`  providerConfiguration: path to json provider configuration file`);
+  console.log(`  providerConfiguration: path to json provider configuration file, or "none"`);
   console.log(`  script: path to javascript script file`);
   console.log(`  method: name of the method to execute`);
 };
@@ -24,7 +24,7 @@ const exit = (code: number = 0): void => {
 
 if (process.argv.length < 5) {
   usage();
-  exit(1);
+  exit();
 }
 
 const providerConfigPath = process.argv[2];
@@ -69,16 +69,16 @@ try {
         return script[method](web3, networkName, ...process.argv.slice(5))
           .then(() => {
             console.log(`Completed ${method}`);
-            exit(0);
+            exit();
           })
           .catch((ex: any) => {
             console.log(`Error in ${method}: ${ex}`);
-            exit(2);
+            exit();
           });
       })
       .catch((ex: any) => {
         console.log(`Error: ${ex}`);
-        exit(2);
+        exit();
       });
   };
 

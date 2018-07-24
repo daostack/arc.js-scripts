@@ -6,7 +6,7 @@ import { promisify } from 'util';
 
 const usage = (): void => {
   console.log(`usage: 'node runWithProvider.js [providerConfiguration] [script] [method] [optionalParameters]'`);
-  console.log(`  providerConfiguration: path to json provider configuration file, or "none"`);
+  console.log(`  providerConfiguration: path to json provider configuration file, or "local"`);
   console.log(`  script: path to javascript script file`);
   console.log(`  method: name of the method to execute`);
 };
@@ -50,7 +50,7 @@ try {
 
   const runScript = async (): Promise<void> => {
 
-    if (providerConfigPath.toLowerCase() !== "none") {
+    if (providerConfigPath.toLowerCase() !== "local") {
       await connectToNetwork();
     }
 

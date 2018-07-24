@@ -22,7 +22,7 @@ npm run build
 
 2. To execute your new script, run:
 
-    `npm run script [pathToProviderConfig]|"none" [pathToScript] [methodNameInScript] [optionalParameters]`
+    `npm run script [pathToProviderConfig]|"local" [pathToScript] [methodNameInScript] [optionalParameters]`
 
     where the parameters are:
 
@@ -35,7 +35,7 @@ npm run build
       "providerUrl": "https://kovan.infura.io/..."
     }</pre>
     
-    If you supply "none" instead of a json file for `pathToProviderConfig`, then the script will not try to create a truffle-hdwallet-provider and will instead run against a node as configured in the Arc.js global configuration settings described [here](https://daostack.github.io/arc.js/Home/#use-default-network-settings) in the Arc.js documentation.
+    If you supply "local" instead of a json file for `pathToProviderConfig`, then the script will not try to create a truffle-hdwallet-provider and will instead run against a node as configured in the Arc.js global configuration settings described [here](https://daostack.github.io/arc.js/Home/#use-default-network-settings) in the Arc.js documentation.
     
       </dd>
     <dt>pathToScript</dt><dd>the path to your JavaScript script file.  Can be either absolute or relative to build/scripts.</dd>

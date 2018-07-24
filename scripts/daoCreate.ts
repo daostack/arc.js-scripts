@@ -3,7 +3,8 @@ import {
   LoggingService,
   LogLevel,
   DAO,
-  ConfigService
+  ConfigService,
+  Web3
 } from "@daostack/arc.js";
 
 interface FounderSpec {
@@ -30,7 +31,7 @@ interface FounderSpec {
  * @param networkName 
  * @param jsonSpecPath 
  */
-export const create = async (web3, networkName: string, jsonSpecPath): Promise<void> => {
+export const create = async (web3: Web3, networkName: string, jsonSpecPath: string): Promise<void> => {
 
   if (!jsonSpecPath) {
     return Promise.reject("jsonSpecPath was not supplied")
@@ -56,6 +57,7 @@ export const create = async (web3, networkName: string, jsonSpecPath): Promise<v
   const dao = await DAO.new(spec);
 
   console.log(`new DAO created at: ${dao.avatar.address}`);
+  console.log(`native token: ${dao.token.address}`);
 
   return Promise.resolve();
 }

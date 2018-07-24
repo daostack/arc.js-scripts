@@ -43,7 +43,7 @@ const options = commandLineArgs(optionDefinitions);
 const usage = (): void => {
   const sections = [
     {
-      header: 'runWithHdProvider',
+      header: 'arcScript',
       content: 'Run scripts agains DAOstack Arc.js.'
     },
     {

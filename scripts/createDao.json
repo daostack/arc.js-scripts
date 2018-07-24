@@ -1,0 +1,17 @@
+{
+  "name": "createDaoExample",
+  "tokenName": "createDaoExample",
+  "tokenSymbol": "CTE",
+  "founders": [
+    {
+      "address": "0xb0c908140fe6fd6fbd4990a5c2e35ca6dc12bfb2",
+      "reputation": 1000,
+      "tokens": 1000
+    }
+  ],
+  "schemes": [
+    {
+      "name": "GenesisProtocol"
+    }
+  ]
+}

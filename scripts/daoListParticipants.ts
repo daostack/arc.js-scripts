@@ -9,7 +9,6 @@ import {
   DecodedLogEntryEvent
 } from "@daostack/arc.js";
 import { BigNumber } from '../node_modules/bignumber.js';
-import { promisify } from 'es6-promisify';
 
 interface FounderSpec {
   /**
@@ -28,7 +27,8 @@ interface FounderSpec {
 }
 
 /**
- * List participants (as measured by reputation) in the given dao, sorted in descending order of reputation.
+ * List participants (as measured by reputation) in the given dao, sorted in descending order of reputation,
+ * including the total amount of reputation, the amount per founder and their percentage of the total.
  * @param web3 
  * @param networkName 
  * @param avatar 
@@ -53,7 +53,7 @@ export const list = async (web3: Web3, networkName: string, avatar: Address): Pr
   });
 
   participants.forEach((p) => {
-    console.log(`${p.address}:${web3.fromWei(p.reputation).toString(10)}`);
+    console.log(`${p.address} : ${web3.fromWei(p.reputation).toString(10)} : ${p.percentageOfTotal.toFixed(2)}`);
   });
 
   return Promise.resolve();
@@ -62,6 +62,7 @@ export const list = async (web3: Web3, networkName: string, avatar: Address): Pr
 export interface Participant {
   address: Address;
   reputation?: BigNumber;
+  percentageOfTotal?: number;
 }
 
 export interface ReputationMintEventResult {
@@ -111,5 +112,14 @@ const getParticipants = async (dao: DAO): Promise<Array<Participant>> => {
       participants.push({ address: account, reputation: balance });
     }
   }
+
+  const totalReputation = participants
+    .map((p: Participant) => p.reputation)
+    .reduce((prev: BigNumber, current: BigNumber) => prev.add(current));
+
+  console.log(`total reputation: ${web3.fromWei(totalReputation)}`);
+
+  participants.forEach((p: Participant) => { p.percentageOfTotal = p.reputation.div(totalReputation).toNumber(); })
+
   return participants;
 }

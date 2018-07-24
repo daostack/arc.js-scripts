@@ -13,7 +13,8 @@ import { promisify } from 'es6-promisify';
 /**
  * Transfer ETH.  'amount' will be converted to Wei.
  * If 'from' is not supplied, then will be set to account[0].
- * 'from' must have a sufficient balance to cover the transfer.
+ * 'from' must have a sufficient balance to cover the transfer,
+ * and must be locked in the current node.
  * @param web3 
  * @param networkName 
  * @param amount 

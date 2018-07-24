@@ -61,7 +61,8 @@ npm run build
 
 Script | Purpose
 ---------|----------
- createDao | create a DAO given a json spec for the DAO
+ daoCreate | create a DAO given a json spec for the DAO
+ daoListParticipants | list participants in the given DAO, by reputation
  ethTransfer | transfer ETH from one account to another
- tokensTransfer | transfer tokens from one account to another
- tokensMint | mint tokens to an account
+ tokenTransfer | transfer tokens from one account to another
+ tokenMint | mint tokens to an account

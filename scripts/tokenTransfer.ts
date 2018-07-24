@@ -12,7 +12,8 @@ import { BigNumber } from 'bignumber.js';
 /**
  * Transfer tokens.  'amount' will be converted to Wei.
  * If 'from' is not supplied, then will be set to account[0].
- * 'from' must have a sufficient balance of tokens to cover the transfer.
+ * 'from' must have a sufficient balance of tokens to cover the transfer,
+ * and must be locked in the running node.
  * @param web3 
  * @param networkName 
  * @param tokenAddress 

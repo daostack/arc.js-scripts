@@ -8,14 +8,14 @@ import {
   Utils
 } from "@daostack/arc.js";
 import { BigNumber } from 'bignumber.js';
+import { promisify } from 'es6-promisify';
 
 /**
- * Transfer tokens.  'amount' will be converted to Wei.
+ * Transfer ETH.  'amount' will be converted to Wei.
  * If 'from' is not supplied, then will be set to account[0].
- * 'from' must have a sufficient balance of tokens to cover the transfer.
+ * 'from' must have a sufficient balance to cover the transfer.
  * @param web3 
  * @param networkName 
- * @param tokenAddress 
  * @param amount 
  * @param to 
  * @param from
@@ -23,17 +23,16 @@ import { BigNumber } from 'bignumber.js';
 export const transfer = async (
   web3: Web3,
   networkName: string,
-  tokenAddress: Address,
   amount: string,
   to: Address,
   from?: Address): Promise<void> => {
 
-  if (!tokenAddress) {
-    return Promise.reject("tokenAddress was not supplied")
-  }
-
   if (!to) {
     return Promise.reject("'to' was not supplied")
+  }
+
+  if (!from) {
+    from = await accounts[0];
   }
 
   if (!from) {
@@ -46,15 +45,17 @@ export const transfer = async (
     return Promise.reject("amount must be given and greater than zero")
   }
 
-  console.log(`transferring ${amount} tokens from ${from} to ${to}`);
+  console.log(`transferring ${amount} ETH from ${from} to ${to}`);
 
-  // TODO:  use arc.js wrapper once available
-  const token = (await Utils.requireContract("StandardToken")).at(tokenAddress);
-  await token.transfer(to, amountBn, { from });
+  await promisify((callback: any) => {
+    web3.eth.sendTransaction({ from, to, value: amountBn }, callback);
+  })();
 
-  const newBalance = web3.fromWei(await token.balanceOf(to));
+  const newBalance = web3.fromWei(await promisify((callback: any) => {
+    web3.eth.getBalance(to, callback);
+  })());
 
-  console.log(`new token balance of ${to}: ${newBalance}`);
+  console.log(`new ETH balance of ${to}: ${newBalance}`);
 
   return Promise.resolve();
 }

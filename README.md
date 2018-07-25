@@ -32,9 +32,9 @@ npm run build
 
     `node ./build/scripts/arcScript.js -s ./example.js -m exampleMethod`
 
-## Using truffle-hdwallet-provider
+## Use truffle-hdwallet-provider
 
-  If you want to use the truffle-hdwallet-provider then you must supply the `provider` option:
+  If you want to use the truffle-hdwallet-provider rather than a local node then you must supply the `provider` option:
 
   `node ./build/scripts/arcScript.js -p '[pathToConfig]'`
 

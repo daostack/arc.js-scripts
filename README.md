@@ -9,7 +9,7 @@ Clone or fork the arc.js-scripts repository from GitHub, then:
 npm run build
 ```
 
-## To Run a Script
+## Run a Script
 
 1. Create a JavaScript file that exports a method that returns a promise that it is complete.
  When arc.js-scripts runs your script, the method will be invoked with two parameters: `web3` and the name of the network in lowercase.
@@ -34,11 +34,11 @@ npm run build
 
 ## Using truffle-hdwallet-provider
 
-  If you want to use the truffle-hdwallet-provider then you will supply the `provider` option:
+  If you want to use the truffle-hdwallet-provider then you must supply the `provider` option:
 
   `node ./build/scripts/arcScript.js -p '[pathToConfig]'`
 
-  The path should reference a json file containing an truffle-hdwallet-provider configuration, looking something like this:
+  The path should reference a json file containing a truffle-hdwallet-provider configuration, looking something like this:
 
   <pre>
   {

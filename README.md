@@ -54,7 +54,10 @@ npm run build
 
     `node ./build/scripts/arcScript.js -s ../local_scripts/[yourscript].js -m [yourMethod]`
 
-* the "scripts" directory contains some useful scripts that you can use, for example:
+* If you are using truffle-hdwallet-provider and you run a script and it connects to the provider but then returns without executing your script, make sure that a node is listening on the url you
+provided in your provider configuration file.
+
+* The "scripts" directory contains some useful scripts that you can use, for example:
 
 
     Script | Purpose

@@ -143,8 +143,8 @@ try {
     if (providerConfigPath) {
       await connectToNetwork();
     } else {
-      ConfigService.set("providerUrl", url);
-      ConfigService.set("providerPort", port);
+      if (url) { ConfigService.set("providerUrl", url); }
+      if (port) { ConfigService.set("providerPort", port); }
     }
 
     /**

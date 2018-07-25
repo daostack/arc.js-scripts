@@ -52,7 +52,7 @@ npm run build
 
 * TypeScript is not necessary, you can create your JavaScript script files however you want.  But if you want you can easily create scripts using TypeScript by placing your .ts files in a "local_scripts" folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build/local_scripts" folder.  Run can then run your script like this:
 
-`node ./build/scripts/arcScript.js -s ../local_scripts/[yourscript].js -m [yourMethod]`
+    `node ./build/scripts/arcScript.js -s ../local_scripts/[yourscript].js -m [yourMethod]`
 
 * the "scripts" directory contains some useful scripts that you can use, for example:
 

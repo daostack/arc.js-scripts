@@ -28,7 +28,7 @@ npm run build
     
     `node ./build/scripts/arcScript.js -h`
 
-    Run the example script:
+    Run the example script against a local node with default url and port:
 
     `node ./build/scripts/arcScript.js -s ./example.js -m exampleMethod`
 
@@ -60,10 +60,10 @@ provided in your provider configuration file.
 * The "scripts" directory contains some useful scripts that you can use, for example:
 
 
-    Script | Purpose
+    Script | Method | Purpose
     ---------|----------
-    daoCreate | create a DAO given a json spec for the DAO
-    daoParticipantsList | list participants in the given DAO, by reputation
-    ethTransfer | transfer ETH from one account to another
-    tokenTransfer | transfer tokens from one account to another
-    tokenMint | mint tokens to an account
+    daoCreate | create | create a DAO given a json spec for the DAO
+    daoParticipantsList | list | list participants in the given DAO, by reputation
+    ethTransfer | transfer | transfer ETH from one account to another
+    tokenTransfer | transfer | transfer tokens from one account to another
+    tokenMint | mint | mint tokens to an account

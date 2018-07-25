@@ -54,10 +54,6 @@ const usage = (): void => {
 
   const usage = commandLineUsage(sections);
   console.log(usage);
-  // console.log(`usage: 'node runWithProvider.js [providerConfiguration] [script] [method] [optionalParameters]'`);
-  // console.log(`  providerConfiguration: path to json provider configuration file, or local Url`);
-  // console.log(`  script: path to javascript script file`);
-  // console.log(`  method: name of the method to execute`);
 };
 
 let provider;
@@ -156,6 +152,8 @@ try {
       .then(async (web3: Web3) => {
         const networkName = await Utils.getNetworkName();
         (global as any).accounts = await promisify(web3.eth.getAccounts)();
+
+        console.log(`Default account: ${accounts[0]}`);
 
         if (!Array.isArray(options.extraParameters)) {
           options.extraParameters = [options.extraParameters]

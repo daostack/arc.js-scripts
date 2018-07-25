@@ -10,7 +10,7 @@
     "createGenesisDao": "npm explore @daostack/arc.js -- npm start createGenesisDao"
   },
   "bin": {
-    "arcscript": "./scripts/runScript.js"
+    "arcScript": "./scripts/arcScript.js"
   },
   "repository": {
     "type": "git",

@@ -14,47 +14,45 @@ npm run build
 1. Create a JavaScript file that exports a method that returns a promise that it is complete.
  When arc.js-scripts runs your script, the method will be invoked with two parameters: `web3` and the name of the network in lowercase.
  
-    Two globals are also available: `web3` and `accounts`.
+    Two globals will also be made available: `web3` and `accounts`.
  
-    See [scripts/example.ts](https://github.com/dkent600/arc.js-scripts/blob/master/scripts/example.ts) for an example of a script. Note that `npm run build` transpiles example.ts into the required JavaScript, putting the generated JavaScript in the "build/scripts" directory.
+    See [scripts/example.ts](https://github.com/dkent600/arc.js-scripts/blob/master/scripts/example.ts) for an example of a script.
     
-    When you refer to the script on the command line (see below), you must refer to the JavaScript file, not the TypeScript.
-
-2. To execute your new script, run:
-
-    `npm run script [pathToProviderConfig]|"local" [pathToScript] [methodNameInScript] [optionalParameters]`
-
-    where the parameters are:
-
-    <dl>
-    <dt>pathToProviderConfig</dt>
-    <dd>A json file containing an truffle-hdwallet-provider configuration, looking something like this:
-      <pre>
-    {
-      "mnemonic": "...",
-      "providerUrl": "https://kovan.infura.io/..."
-    }</pre>
+    Note that `npm run build` transpiles example.ts into the required JavaScript, putting the generated JavaScript in the "build/scripts" directory.
     
-    If you supply "local" instead of a json file for `pathToProviderConfig`, then the script will not try to create a truffle-hdwallet-provider and will instead run against a node as configured in the Arc.js global configuration settings described [here](https://daostack.github.io/arc.js/Home/#use-default-network-settings) in the Arc.js documentation.
-    
-      </dd>
-    <dt>pathToScript</dt><dd>the path to your JavaScript script file.  Can be either absolute or relative to build/scripts.</dd>
-    
-    <dt>methodNameInScript</dt><dd>the name of an exported method to invoke in your script</dd>
-    <dt>optionalParameters</dt><dd>optional parameters that, if present, will be passed as arguments to your script method</dd>
-    </dl>
+    When you refer to the script on the command line (see below), you must refer to a JavaScript file, not to TypeScript.
 
+2. Run the script
+
+    Get help on command line options:
+    
+    `node ./build/scripts/arcScript.js -h`
+
+    Run the example script:
+
+    `node ./build/scripts/arcScript.js -s ./example.js -m exampleMethod`
+
+## Using truffle-hdwallet-provider
+
+  If you want to use the truffle-hdwallet-provider then you will supply the `provider` option:
+
+  `node ./build/scripts/arcScript.js -p '[pathToConfig]'`
+
+  The path should reference a json file containing an truffle-hdwallet-provider configuration, looking something like this:
+
+  <pre>
+  {
+    "mnemonic": "...",
+    "providerUrl": "https://kovan.infura.io/..."
+  }</pre>
+    
 ## Notes
 
 * Your method may call `InitializeArcJs` for cases where you want to use Arc contracts (see scripts/example.ts).
 
-* TypeScript is not necessary, but if you want you can easily create scripts using TypeScript by placing your .ts files in a "local_scripts" folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build/local_scripts" folder.
+* TypeScript is not necessary, you can create your JavaScript script files however you want.  But if you want you can easily create scripts using TypeScript by placing your .ts files in a "local_scripts" folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build/local_scripts" folder.  Run can then run your script like this:
 
-    Regardless, you can create your JavaScript script files however you want.
-
-* The build command (`npm run build`) will compile TypeScript files if any are found in the root "local_scripts" folder that you may create for yourself.  If it exists, this folder is excluded from the git repo.  Generated JavaScript files in this folder will appear in the "build/local_scripts" folder.
-
-* You can start ganache with the command `npm run ganache`, migrate Arc contracts with `npm run migrateContracts` and create a Genesis DAO with `npm run createGenesisDao`.  See more about Arc.js contract migration in the Arc.js documentation [here](https://daostack.github.io/arc.js/Migration/).
+`node ./build/scripts/arcScript.js -s ../local_scripts/[yourscript].js -m [yourMethod]`
 
 * the "scripts" directory contains some useful scripts that you can use, for example:
 

@@ -29,13 +29,13 @@ class UrlDetails {
 }
 
 const optionDefinitions = [
-  { name: 'help', type: Boolean },
-  { name: 'provider', alias: 'p', type: provider => new FileDetails(provider), description: "path to json provider configuration file, or local Url" },
-  { name: 'script', alias: 's', type: script => new FileDetails(script), description: "path to javascript script file" },
-  { name: 'method', alias: 'm', type: String, description: "name of the method to execute" },
-  { name: 'port', alias: 'r', type: Number, description: "node client port" },
-  { name: 'url', alias: 'u', type: url => new UrlDetails(url), description: "node client url" },
-  { name: 'extraParameters', multiple: true, defaultOption: true, description: "optional parameters that if present will be passed as arguments to your script method" }
+  { name: 'help', alias: 'h', type: Boolean, description: "show these command line options" },
+  { name: 'script', alias: 's', type: String, description: "[required] path to javascript script file" },
+  { name: 'method', alias: 'm', type: String, description: "[required] name of the method to execute" },
+  { name: 'provider', alias: 'p', type: provider => new FileDetails(provider), description: "path to truffle-hdwallet-provider json configuration file" },
+  { name: 'url', alias: 'u', type: url => new UrlDetails(url), description: "node url when not using truffle-hdwallet-provider, default: 'http://127.0.0.1'" },
+  { name: 'port', alias: 'r', type: Number, description: "node port when not using truffle-hdwallet-provider, default: 8545" },
+  { name: 'extraParameters', alias: 'e', multiple: true, defaultOption: true, description: "optional parameters that if present will be passed as arguments to your script method (is not required to explicitely state the command name 'extraParameters')" }
 ];
 
 const options = commandLineArgs(optionDefinitions);
@@ -99,10 +99,6 @@ if (options.url) {
     console.log(`url is not a valid url`);
     exit();
   }
-  if (!options.port) {
-    console.log(`you must provide port if you provide a url`);
-    exit();
-  }
   url = options.url.url;
 }
 
@@ -111,15 +107,18 @@ if (options.port) {
     console.log(`can't supply provider and port at the same`);
     exit();
   }
-  if (!options.url) {
-    console.log(`you must provide url if you provide a port`);
-    exit();
-  }
   port = options.port;
 }
 
-const script = require(options.script.filename);
-const method = options.method;
+if (!options.script) {
+  console.log(`script option is required`);
+  exit();
+}
+
+if (!options.method) {
+  console.log(`method option is required`);
+  exit();
+}
 
 const connectToNetwork = async (): Promise<void> => {
   const webConstructor = require("web3");
@@ -157,6 +156,13 @@ try {
       .then(async (web3: Web3) => {
         const networkName = await Utils.getNetworkName();
         (global as any).accounts = await promisify(web3.eth.getAccounts)();
+
+        if (!Array.isArray(options.extraParameters)) {
+          options.extraParameters = [options.extraParameters]
+        }
+
+        const script = require(options.script);
+        const method = options.method;
 
         console.log(`Executing ${method}`);
 

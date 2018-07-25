@@ -30,7 +30,7 @@ class UrlDetails {
 
 const optionDefinitions = [
   { name: 'help', alias: 'h', type: Boolean, description: "show these command line options" },
-  { name: 'script', alias: 's', type: String, description: "[required] path to javascript script file" },
+  { name: 'script', alias: 's', type: String, description: "[required] path to javascript script file, either absolute or relative to build/scripts" },
   { name: 'method', alias: 'm', type: String, description: "[required] name of the method to execute" },
   { name: 'provider', alias: 'p', type: provider => new FileDetails(provider), description: "path to truffle-hdwallet-provider json configuration file" },
   { name: 'url', alias: 'u', type: url => new UrlDetails(url), description: "node url when not using truffle-hdwallet-provider, default: 'http://127.0.0.1'" },

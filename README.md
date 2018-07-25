@@ -61,7 +61,7 @@ provided in your provider configuration file.
 
 
     Script | Method | Purpose
-    ---------|----------
+    ---------|---------|----------
     daoCreate | create | create a DAO given a json spec for the DAO
     daoParticipantsList | list | list participants in the given DAO, by reputation
     ethTransfer | transfer | transfer ETH from one account to another

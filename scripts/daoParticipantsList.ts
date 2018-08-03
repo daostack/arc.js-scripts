@@ -33,7 +33,7 @@ interface FounderSpec {
  * @param networkName 
  * @param avatar 
  */
-export const list = async (web3: Web3, networkName: string, avatar: Address): Promise<void> => {
+export const run = async (web3: Web3, networkName: string, avatar: Address): Promise<void> => {
 
   if (!avatar) {
     return Promise.reject("avatar was not supplied")

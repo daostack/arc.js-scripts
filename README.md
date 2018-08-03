@@ -30,7 +30,7 @@ npm run build
 
     Run the example script against a local node with default url and port:
 
-    `node ./build/scripts/arcScript.js -s ./example.js -m exampleMethod`
+    `node ./build/scripts/arcScript.js -s ./example.js`
 
 ## Use truffle-hdwallet-provider
 

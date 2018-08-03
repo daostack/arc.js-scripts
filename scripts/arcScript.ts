@@ -31,7 +31,7 @@ class UrlDetails {
 const optionDefinitions = [
   { name: 'help', alias: 'h', type: Boolean, description: "show these command line options" },
   { name: 'script', alias: 's', type: String, description: "[required] path to javascript script file, either absolute or relative to build/scripts" },
-  { name: 'method', alias: 'm', type: String, description: "[required] name of the method to execute" },
+  { name: 'method', alias: 'm', type: String, description: "name of the method to execute, default: \"run\"" },
   { name: 'provider', alias: 'p', type: provider => new FileDetails(provider), description: "path to truffle-hdwallet-provider json configuration file" },
   { name: 'url', alias: 'u', type: url => new UrlDetails(url), description: "node url when not using truffle-hdwallet-provider, default: 'http://127.0.0.1'" },
   { name: 'port', alias: 'r', type: Number, description: "node port when not using truffle-hdwallet-provider, default: 8545" },
@@ -112,8 +112,7 @@ if (!options.script) {
 }
 
 if (!options.method) {
-  console.log(`method option is required`);
-  exit();
+  options.method = "run";
 }
 
 const connectToNetwork = async (): Promise<void> => {
@@ -162,20 +161,20 @@ try {
         const script = require(options.script);
         const method = options.method;
 
-        console.log(`Executing ${method}`);
+        // console.log(`Executing ${method}`);
 
         return script[method](web3, networkName, ...options.extraParameters)
           .then(() => {
-            console.log(`Completed ${method}`);
+            // console.log(`Completed ${method}`);
             exit();
           })
-          .catch((ex: any) => {
-            console.log(`Error in ${method}: ${ex}`);
+          .catch((ex: Error) => {
+            console.log(`Error in ${method}: ${ex.message}`);
             exit();
           });
       })
-      .catch((ex: any) => {
-        console.log(`Error: ${ex}`);
+      .catch((ex: Error) => {
+        console.log(`Error: ${ex.message}`);
         exit();
       });
   };

@@ -20,7 +20,7 @@ import { BigNumber } from 'bignumber.js';
  * @param to 
  * @param onBehalfOf 
  */
-export const mint = async (
+export const run = async (
   web3: Web3,
   networkName: string,
   tokenAddress: Address,

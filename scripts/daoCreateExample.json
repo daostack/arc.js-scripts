@@ -4,14 +4,32 @@
   "tokenSymbol": "CTE",
   "founders": [
     {
-      "address": "0xb0c908140fe6fd6fbd4990a5c2e35ca6dc12bfb2",
+      "address": "[anAddress]",
       "reputation": 1000,
       "tokens": 1000
     }
   ],
   "schemes": [
     {
-      "name": "GenesisProtocol"
+      "name": "SchemeRegistrar",
+      "votingMachineParams": {
+        "votingMachineName": "AbsoluteVote"
+      }
+    },
+    {
+      "name": "GenesisProtocol",
+      "boostedVotePeriodLimit": 1200,
+      "preBoostedVotePeriodLimit": 1200,
+      "quietEndingPeriod": 1200
+    },
+    {
+      "name": "ContributionReward"
     }
-  ]
+  ],
+  "votingMachineParams": {
+    "votingMachineName": "GenesisProtocol",
+    "boostedVotePeriodLimit": 1200,
+    "preBoostedVotePeriodLimit": 1200,
+    "quietEndingPeriod": 1200
+  }
 }

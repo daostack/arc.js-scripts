@@ -21,7 +21,7 @@ import { BigNumber } from 'bignumber.js';
  * @param to 
  * @param from
  */
-export const transfer = async (
+export const run = async (
   web3: Web3,
   networkName: string,
   tokenAddress: Address,

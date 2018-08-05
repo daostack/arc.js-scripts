@@ -50,15 +50,14 @@ npm run build
 
 * Your method may call `InitializeArcJs` for cases where you want to use Arc contracts (see scripts/example.ts).
 
-* TypeScript is not necessary, you can create your JavaScript script files however you want.  But if you want you can easily create scripts using TypeScript by placing your .ts files in a "local_scripts" folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build/local_scripts" folder.  Run can then run your script like this:
+* TypeScript is not necessary, you can create your JavaScript script files however you want.  But if you want you can easily create scripts using TypeScript by placing your .ts files anywhere under the project root  folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build" folder.  Suppose you put your typescript files in another folder called "local_scripts" in the project root.  Then after running `npm run build` you can run your script like this:
 
-    `node ./build/scripts/arcScript.js -s ../local_scripts/[yourscript].js -m [yourMethod]`
+    `node ./build/scripts/arcScript.js -s ../local_scripts/[yourscript].js`
 
 * If you are using truffle-hdwallet-provider and you run a script and it connects to the provider but then returns without executing your script, make sure that a node is listening on the url you
 provided in your provider configuration file.
 
 * The "scripts" directory contains some useful scripts that you can use, for example:
-
 
     Script | Method | Purpose
     ---------|---------|----------
@@ -67,3 +66,5 @@ provided in your provider configuration file.
     ethTransfer | transfer | transfer ETH from one account to another
     tokenTransfer | transfer | transfer tokens from one account to another
     tokenMint | mint | mint tokens to an account
+
+* The default name of the method that will be executed is "run".  You may change the name using the "method"  parameter.

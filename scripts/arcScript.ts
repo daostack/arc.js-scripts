@@ -155,7 +155,7 @@ try {
         console.log(`Default account: ${accounts[0]}`);
 
         if (!Array.isArray(options.extraParameters)) {
-          options.extraParameters = [options.extraParameters]
+          options.extraParameters = [];
         }
 
         const script = require(options.script);
@@ -169,12 +169,12 @@ try {
             exit();
           })
           .catch((ex: Error) => {
-            console.log(`Error in ${method}: ${ex.message}`);
+            console.log(`Error in ${method}: ${ex.message ? ex.message : ex}`);
             exit();
           });
       })
       .catch((ex: Error) => {
-        console.log(`Error: ${ex.message}`);
+        console.log(`Error: ${ex.message ? ex.message : ex}`);
         exit();
       });
   };

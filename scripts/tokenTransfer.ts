@@ -51,11 +51,13 @@ export const run = async (
 
   // TODO:  use arc.js wrapper once available
   const token = (await Utils.requireContract("StandardToken")).at(tokenAddress);
-  await token.transfer(to, amountBn, { from });
+  const tx = await token.transfer(to, amountBn, { from });
 
   const newBalance = web3.fromWei(await token.balanceOf(to));
 
   console.log(`new token balance of ${to}: ${newBalance}`);
+
+  console.log(`txHash: ${tx.tx}`);
 
   return Promise.resolve();
 }

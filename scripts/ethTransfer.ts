@@ -48,7 +48,7 @@ export const run = async (
 
   console.log(`transferring ${amount} ETH from ${from} to ${to}`);
 
-  await promisify((callback: any) => {
+  const txHash = await promisify((callback: any) => {
     web3.eth.sendTransaction({ from, to, value: amountBn }, callback);
   })();
 
@@ -57,6 +57,7 @@ export const run = async (
   })());
 
   console.log(`new ETH balance of ${to}: ${newBalance}`);
+  console.log(`txHash: ${txHash}`);
 
   return Promise.resolve();
 }

@@ -39,7 +39,7 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@daostack/arc.js": "file:../arc.js/daostack-arc.js-0.0.0-alpha.75.tgz",
+    "@daostack/arc.js": "0.0.0-alpha.75",
     "@types/node": "^10.5.2",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",

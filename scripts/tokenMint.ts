@@ -50,11 +50,13 @@ export const run = async (
 
   // TODO:  use arc.js wrapper once available
   const token = (await Utils.requireContract("MintableToken")).at(tokenAddress);
-  await token.mint(to, amountBn, { from: onBehalfOf });
+  const tx = await token.mint(to, amountBn, { from: onBehalfOf });
 
   const newBalance = web3.fromWei(await token.balanceOf(to));
 
   console.log(`new token balance of ${to}: ${newBalance}`);
+
+  console.log(`txHash: ${tx.tx}`);
 
   return Promise.resolve();
 }

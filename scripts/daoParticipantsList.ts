@@ -52,6 +52,7 @@ export const run = async (web3: Web3, networkName: string, avatar: Address): Pro
     return (b.reputation.sub(a.reputation)).toNumber();
   });
 
+  console.log(`address : reputation : percent of total `);
   participants.forEach((p) => {
     console.log(`${p.address} : ${web3.fromWei(p.reputation).toString(10)} : ${p.percentageOfTotal.toFixed(2)}`);
   });
@@ -119,7 +120,7 @@ const getParticipants = async (dao: DAO, web3: Web3): Promise<Array<Participant>
 
   console.log(`total reputation: ${web3.fromWei(totalReputation)}`);
 
-  participants.forEach((p: Participant) => { p.percentageOfTotal = p.reputation.div(totalReputation).toNumber(); })
+  participants.forEach((p: Participant) => { p.percentageOfTotal = p.reputation.div(totalReputation).toNumber() * 100; })
 
   return participants;
 }

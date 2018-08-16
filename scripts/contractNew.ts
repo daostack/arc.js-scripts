@@ -48,7 +48,7 @@ export const run = async (
     throw new Error(`can't find '${spec.name}': ${ex.message ? ex.message : ex}`);
   }
 
-  console.log(`instantiating new ${spec.name} with ${params}`);
+  console.log(`instantiating ${spec.name} with ${params}`);
 
   const newContract = await truffleContract.new(...params);
 

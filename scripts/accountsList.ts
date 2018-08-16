@@ -10,7 +10,7 @@ import {
  * @param web3 
  * @param networkName 
  */
-export const list = async (web3: Web3, networkName: string): Promise<void> => {
+export const run = async (web3: Web3, networkName: string): Promise<void> => {
 
   accounts.forEach((a) => {
     console.log(a);

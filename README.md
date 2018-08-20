@@ -57,6 +57,8 @@ npm run build
 * If you are using truffle-hdwallet-provider and you run a script and it connects to the provider but then returns without executing your script, make sure that a node is listening on the url you
 provided in your provider configuration file.
 
+* The default name of the method that will be executed is "run".  You may use a different method name and specify it on the command line using the "method"  parameter.
+
 * The "scripts" directory contains some useful scripts that you can use, for example:
 
     Script | Purpose
@@ -71,5 +73,3 @@ provided in your provider configuration file.
     proposalGpStake | stake on a vote on the given proposal with the given GenesisProtocol
     tokenTransfer | transfer tokens from one account to another
     tokenMint | mint tokens to an account
-
-* The default name of the method that will be executed is "run".  You may change the name using the "method"  parameter.

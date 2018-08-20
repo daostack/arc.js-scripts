@@ -60,7 +60,7 @@ provided in your provider configuration file.
 * The "scripts" directory contains some useful scripts that you can use, for example:
 
     Script | Purpose
-    ---------|---------|----------
+    ---------|----------
     accountLists | list all of the accounts known to the current web3
     contractNew | instantiate an Arc contract given its name and contructor parameters in json
     daoCreate | create a DAO given a json spec for the DAO

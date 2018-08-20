@@ -59,12 +59,17 @@ provided in your provider configuration file.
 
 * The "scripts" directory contains some useful scripts that you can use, for example:
 
-    Script | Method | Purpose
+    Script | Purpose
     ---------|---------|----------
-    daoCreate | create | create a DAO given a json spec for the DAO
-    daoParticipantsList | list | list participants in the given DAO, by reputation
-    ethTransfer | transfer | transfer ETH from one account to another
-    tokenTransfer | transfer | transfer tokens from one account to another
-    tokenMint | mint | mint tokens to an account
+    accountLists | list all of the accounts known to the current web3
+    contractNew | instantiate an Arc contract given its name and contructor parameters in json
+    daoCreate | create a DAO given a json spec for the DAO
+    daoParticipantsList | list participants in the given DAO, by reputation
+    daoSchemesList | list the schemes registered with the given DAO
+    ethTransfer | transfer ETH from one account to another
+    proposalVote | cast a vote on the given proposal with the given voting machine
+    proposalGpStake | stake on a vote on the given proposal with the given GenesisProtocol
+    tokenTransfer | transfer tokens from one account to another
+    tokenMint | mint tokens to an account
 
 * The default name of the method that will be executed is "run".  You may change the name using the "method"  parameter.

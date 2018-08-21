@@ -24,7 +24,7 @@ export const run = async (web3: Web3, networkName: string, avatar: Address): Pro
 
   LoggingService.logLevel = LogLevel.info | LogLevel.error;
 
-  await InitializeArcJs();
+  await InitializeArcJs({ filter: {} });
 
   const participants = await getParticipants(avatar, web3);
 

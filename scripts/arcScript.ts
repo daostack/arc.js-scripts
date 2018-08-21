@@ -125,9 +125,17 @@ const connectToNetwork = async (): Promise<void> => {
   providerConfig = require(providerConfigPath);
 
   const HDWalletProvider = require("truffle-hdwallet-provider");
+  const NonceTrackerSubprovider = require("web3-provider-engine/subproviders/nonce-tracker")
   console.log(`Provider: '${providerConfig.providerUrl}'`);
   console.log(`Account: '${providerConfig.mnemonic}'`);
   provider = new HDWalletProvider(providerConfig.mnemonic, providerConfig.providerUrl);
+  if (providerConfig.name && (providerConfig.name.toLowerCase() === "infura")) {
+    console.log("applying NonceTrackerSubprovider");
+    // see https://ethereum.stackexchange.com/a/50038/21913
+    var nonceTracker = new NonceTrackerSubprovider();
+    provider.engine._providers.unshift(nonceTracker);
+    nonceTracker.setEngine(provider.engine);
+  }
   (global as any).web3 = new webConstructor(provider);
 };
 

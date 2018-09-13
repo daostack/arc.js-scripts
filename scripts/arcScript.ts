@@ -2,7 +2,7 @@
 /* tslint:disable:no-var-requires */
 import { Web3 } from "web3";
 import { Utils, ConfigService } from "@daostack/arc.js";
-import { promisify } from 'util';
+import { promisify } from 'es6-promisify';
 const fs = require("fs-extra");
 const commandLineArgs = require('command-line-args')
 const validUrl = require('valid-url');

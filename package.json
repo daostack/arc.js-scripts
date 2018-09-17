@@ -39,7 +39,7 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@daostack/arc.js": "0.0.0-alpha.79",
+    "@daostack/arc.js": "0.0.0-alpha.81",
     "@types/node": "^10.5.2",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
@@ -47,6 +47,7 @@
     "fs-extra": "^7.0.0",
     "growl": "~> 1.10.0",
     "rimraf": "^2.6.2",
+    "truffle-hdwallet-provider": "0.0.6",
     "typescript": "^2.9.2",
     "valid-url": "^1.0.9",
     "web3-provider-engine": "github:MetaMask/provider-engine"

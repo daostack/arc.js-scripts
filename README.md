@@ -68,6 +68,7 @@ provided in your provider configuration file.
     daoCreate | create a DAO given a json spec for the DAO
     daoParticipantsList | list participants in the given DAO, by reputation
     daoSchemesList | list the schemes registered with the given DAO
+    daosList | list the names and addresses of all the DAOs created using the Arc DaoCreator contract in the packaged version of Arc.js
     ethTransfer | transfer ETH from one account to another
     proposalVote | cast a vote on the given proposal with the given voting machine
     proposalGpStake | stake on a vote on the given proposal with the given GenesisProtocol

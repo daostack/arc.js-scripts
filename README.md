@@ -66,6 +66,7 @@ provided in your provider configuration file.
     accountLists | list all of the accounts known to the current web3
     contractNew | instantiate an Arc contract given its name and contructor parameters in json
     daoCreate | create a DAO given a json spec for the DAO
+    daoParticipantsActivity | Output information about DAO participant activity.  Currently only for ContributionReward.
     daoParticipantsList | list participants in the given DAO, by reputation
     daoSchemesList | list the schemes registered with the given DAO
     daosList | list the names and addresses of all the DAOs created using the Arc DaoCreator contract in the packaged version of Arc.js

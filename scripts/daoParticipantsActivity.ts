@@ -136,7 +136,7 @@ const reportGenesisProtocol = async (avatar: Address) => {
     console.log(`    reputation redeemed: ${web3.fromWei(reputationRedeemed).toString(10)}`);
 
     /**
-     * can't do this calulation:  no way to know whether a vote occured during the preboosted period
+     * can't do this calculation:  no way to know whether a vote occured during the preboosted period
      */
     //   let lostVoterRep = new BigNumber(0);
 

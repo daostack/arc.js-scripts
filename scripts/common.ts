@@ -13,4 +13,8 @@ export class Common {
         return block.gasLimit - 100000;
       });
   }
+
+  public static isTruthy(str: string): boolean {
+    return JSON.parse(str);
+  }
 }

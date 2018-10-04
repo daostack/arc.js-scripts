@@ -6,6 +6,7 @@ import {
   ConfigService,
   Web3
 } from "@daostack/arc.js";
+import { Common } from './common';
 
 interface FounderSpec {
   /**
@@ -31,7 +32,11 @@ interface FounderSpec {
  * @param networkName 
  * @param jsonSpecPath 
  */
-export const run = async (web3: Web3, networkName: string, jsonSpecPath: string): Promise<void> => {
+export const run = async (
+  web3: Web3,
+  networkName: string,
+  jsonSpecPath: string,
+  isRawJson: string = "false"): Promise<void> => {
 
   if (!jsonSpecPath) {
     return Promise.reject("jsonSpecPath was not supplied")
@@ -42,7 +47,7 @@ export const run = async (web3: Web3, networkName: string, jsonSpecPath: string)
   await InitializeArcJs();
   ConfigService.set("estimateGas", true);
 
-  const spec = require(jsonSpecPath);
+  const spec = Common.isTruthy(isRawJson) ? jsonSpecPath : require(jsonSpecPath);
 
   if (!spec.founders || !spec.founders.length) {
     throw new Error("You must supply at least one founder");

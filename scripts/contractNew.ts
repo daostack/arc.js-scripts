@@ -1,9 +1,7 @@
 import {
-  InitializeArcJs,
-  LoggingService,
-  LogLevel,
   Web3,
-  Utils
+  Utils,
+  Address
 } from "@daostack/arc.js";
 
 /**
@@ -14,11 +12,13 @@ import {
  * ```
  * {
  *   name: "arcContractName",
- *   constructorParams: [value1, value2, value3, .... ]
+ *   constructorParams: [value1, value2, value3, .... ],
+ *   initializeParams: []
  * }
  * ```
  * 
  * `constructorParams` can be omitted if there are no params
+ * `initializeParams` is only for contracts that have an `initialize` method after being constructed
  * 
  * @param web3 
  * @param networkName 
@@ -27,7 +27,7 @@ export const run = async (
   web3: Web3,
   networkName: string,
   jsonSpecPath: string
-): Promise<void> => {
+): Promise<{ address: Address }> => {
 
   if (!jsonSpecPath) {
     throw new Error("jsonSpecPath was not supplied");
@@ -48,11 +48,19 @@ export const run = async (
     throw new Error(`can't find '${spec.name}': ${ex.message ? ex.message : ex}`);
   }
 
-  console.log(`instantiating ${spec.name} with ${params}`);
+  console.log(`instantiating ${spec.name}`);
 
   const newContract = await truffleContract.new(...params);
 
   console.log(`new ${spec.name} address: ${newContract.address} `);
 
-  return Promise.resolve();
+  const initializeParams = spec.initializeParams || [];
+
+  if (initializeParams.length) {
+    console.log(`initializing ${spec.name}`);
+    await newContract.initialize(...initializeParams);
+  }
+
+
+  return Promise.resolve(newContract);
 }

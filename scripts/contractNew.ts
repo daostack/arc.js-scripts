@@ -3,9 +3,10 @@ import {
   Utils,
   Address
 } from "@daostack/arc.js";
+import { Common } from './common';
 
 /**
- * Instantiate a contract given the json specification for it.
+ * Instantiate a contract given the json specification for it. 
  * Logs the resulting address to the console.
  * 
  * The spec should look like this
@@ -22,24 +23,35 @@ import {
  * 
  * @param web3 
  * @param networkName 
+ * @param jsonSpecPath
+ * @param gas optional gas amount.  if set to "max" then will use a high limit close to the current block limit
  */
 export const run = async (
   web3: Web3,
   networkName: string,
-  jsonSpecPath: string
+  jsonSpecPath: string | object,
+  isRawJson: string = "false",
+  gas?: string
 ): Promise<{ address: Address }> => {
 
   if (!jsonSpecPath) {
     throw new Error("jsonSpecPath was not supplied");
   }
 
-  const spec = require(jsonSpecPath);
+  const spec = Common.isTruthy(isRawJson) ? jsonSpecPath : require(jsonSpecPath as string);
 
   if (!spec.name) {
     throw new Error("contract name was not supplied");
   }
 
   const params = spec.constructorParams || [];
+
+  if (gas) {
+    if (gas = "max") {
+      gas = (await Common.computeMaxGasLimit(web3)).toString();
+    }
+    params.push({ gas: Number.parseInt(gas) })
+  }
 
   let truffleContract;
   try {

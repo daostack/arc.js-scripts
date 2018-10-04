@@ -35,7 +35,7 @@ interface FounderSpec {
 export const run = async (
   web3: Web3,
   networkName: string,
-  jsonSpecPath: string,
+  jsonSpecPath: string | object,
   isRawJson: string = "false"): Promise<void> => {
 
   if (!jsonSpecPath) {
@@ -47,7 +47,7 @@ export const run = async (
   await InitializeArcJs();
   ConfigService.set("estimateGas", true);
 
-  const spec = Common.isTruthy(isRawJson) ? jsonSpecPath : require(jsonSpecPath);
+  const spec = Common.isTruthy(isRawJson) ? jsonSpecPath : require(jsonSpecPath as string);
 
   if (!spec.founders || !spec.founders.length) {
     throw new Error("You must supply at least one founder");

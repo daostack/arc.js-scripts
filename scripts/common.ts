@@ -17,4 +17,5 @@ export class Common {
   public static isTruthy(str: string): boolean {
     return JSON.parse(str);
   }
+
 }

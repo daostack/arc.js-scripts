@@ -2,7 +2,6 @@ import {
   InitializeArcJs,
   LoggingService,
   LogLevel,
-  DAO,
   Web3,
   Address,
   WrapperService,
@@ -10,14 +9,11 @@ import {
   DecodedLogEntryEvent,
   NewContributionProposalEventResult,
   Hash,
-  StakeEventResult,
+  GpStakeEventResult,
   VoteProposalEventResult,
   ContributionProposal,
   BinaryVoteResult,
-  GenesisProtocolProposal,
-  ProposalState,
-  GPExecuteProposalEventResult,
-  ExecutionState
+  GpRedeemEventResult,
 } from "@daostack/arc.js";
 import { BigNumber } from 'bignumber.js';
 
@@ -107,10 +103,10 @@ const reportGenesisProtocol = async (avatar: Address) => {
      * only count votes on the given list of proposals
      */
     const tokenRedemptions = (await tokensRedeemedFetcher.get())
-      .filter((vote: DecodedLogEntryEvent<RedeemEventResult>) => proposalIds.has(vote.args._proposalId));
+      .filter((vote: DecodedLogEntryEvent<GpRedeemEventResult>) => proposalIds.has(vote.args._proposalId));
 
     const totalTokensRedeemed = tokenRedemptions
-      .map((r: DecodedLogEntryEvent<RedeemEventResult>) => r.args._amount)
+      .map((r: DecodedLogEntryEvent<GpRedeemEventResult>) => r.args._amount)
       .reduce((prev: BigNumber, current: BigNumber) => {
         return prev.add(current)
       })
@@ -125,10 +121,10 @@ const reportGenesisProtocol = async (avatar: Address) => {
      * only count votes on the given list of proposals
      */
     const reputationRedemptions = (await reputationRedeemedFetcher.get())
-      .filter((vote: DecodedLogEntryEvent<RedeemEventResult>) => proposalIds.has(vote.args._proposalId));
+      .filter((vote: DecodedLogEntryEvent<GpRedeemEventResult>) => proposalIds.has(vote.args._proposalId));
 
     const reputationRedeemed = reputationRedemptions
-      .map((r: DecodedLogEntryEvent<RedeemEventResult>) => r.args._amount)
+      .map((r: DecodedLogEntryEvent<GpRedeemEventResult>) => r.args._amount)
       .reduce((prev: BigNumber, current: BigNumber) => {
         return prev.add(current)
       })
@@ -175,14 +171,14 @@ const reportGenesisProtocol = async (avatar: Address) => {
    * only count votes on the given list of proposals (don't count votes from contracts we aren't counting)
    */
   const stakes = (await stakesFetcher.get())
-    .filter((stake: DecodedLogEntryEvent<StakeEventResult>) => proposalIds.has(stake.args._proposalId));
+    .filter((stake: DecodedLogEntryEvent<GpStakeEventResult>) => proposalIds.has(stake.args._proposalId));
 
   console.log(`  stakes:`);
   console.log(`    count: ${stakes.length}`);
 
   if (stakes.length) {
     const totalStaked = stakes
-      .map((r: DecodedLogEntryEvent<StakeEventResult>) => r.args._amount)
+      .map((r: DecodedLogEntryEvent<GpStakeEventResult>) => r.args._amount)
       .reduce((prev: BigNumber, current: BigNumber) => {
         return prev.add(current)
       })
@@ -213,13 +209,13 @@ const reportGenesisProtocol = async (avatar: Address) => {
    * only count stakes on the given list of proposals
    */
   const bounties = (await bountyFetcher.get())
-    .filter((stake: DecodedLogEntryEvent<RedeemEventResult>) => proposalIds.has(stake.args._proposalId));
+    .filter((stake: DecodedLogEntryEvent<GpRedeemEventResult>) => proposalIds.has(stake.args._proposalId));
 
   console.log(`  bounties: ${bounties.length}`);
 
   if (bounties.length) {
     const totalBounties = bounties
-      .map((r: DecodedLogEntryEvent<RedeemEventResult>) => r.args._amount)
+      .map((r: DecodedLogEntryEvent<GpRedeemEventResult>) => r.args._amount)
       .reduce((prev: BigNumber, current: BigNumber) => {
         return prev.add(current)
       })

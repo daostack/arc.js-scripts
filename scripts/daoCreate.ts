@@ -4,7 +4,8 @@ import {
   LogLevel,
   DAO,
   ConfigService,
-  Web3
+  Web3,
+  Utils
 } from "@daostack/arc.js";
 import { Common } from './common';
 
@@ -36,7 +37,7 @@ export const run = async (
   web3: Web3,
   networkName: string,
   jsonSpecPath: string | object,
-  isRawJson: string = "false"): Promise<void> => {
+  isRawJson: string = "false"): Promise<DAO> => {
 
   if (!jsonSpecPath) {
     return Promise.reject("jsonSpecPath was not supplied")
@@ -68,5 +69,5 @@ export const run = async (
   console.log(`new DAO created at: ${dao.avatar.address}`);
   console.log(`native token: ${dao.token.address}`);
 
-  return Promise.resolve();
+  return Promise.resolve(dao);
 }

@@ -1,0 +1,84 @@
+{
+  "name": "Circles DAO",
+  "tokenName": "Circles",
+  "tokenSymbol": "CIL",
+  "founders": [
+    {
+      "address": "0xe7b81Ae742Fdc4Cac5F6280aa91Bc28D6df34a89",
+      "reputation": 100,
+      "tokens": 0
+    },
+    {
+      "address": "0xc16c8702a1d50a92669ed0f970d6e1f7dae74c44",
+      "reputation": 50,
+      "tokens": 0
+    },
+    {
+      "address": "0x6ac0A885Ed84F4A2D062c60FB7DaaF504Fc8C47f",
+      "reputation": 100,
+      "tokens": 0
+    },
+    {
+      "address": "0xce7298e5ef1ae8af0573edc2ebd03ab0f837e214",
+      "reputation": 50,
+      "tokens": 0
+    },
+    {
+      "address": "0xb38698d1cf896ad6d3bbef3e6ee6b90a78837a1f",
+      "reputation": 550,
+      "tokens": 0
+    },
+    {
+      "address": "0x5a4e13fa32a8e60cb7b1865259dcea118c8bff9d",
+      "reputation": 50,
+      "tokens": 0
+    },
+    {
+      "address": "0xc4d9d1a93068d311ab18e988244123430eb4f1cd",
+      "reputation": 100,
+      "tokens": 0
+    }
+  ],
+  "schemes": [
+    {
+      "name": "SchemeRegistrar"
+    },
+    {
+      "name": "ContributionReward",
+      "votingMachineParams": {
+        "votingMachineName": "GenesisProtocol",
+        "boostedVotePeriodLimit": 7200,
+        "daoBountyConst": 30,
+        "daoBountyLimit": "500000000000000000000",
+        "minimumStakingFee": 0,
+        "preBoostedVotePeriodLimit": 7200,
+        "preBoostedVoteRequiredPercentage": 50,
+        "proposingRepRewardConstA": 5,
+        "proposingRepRewardConstB": 10,
+        "quietEndingPeriod": 1800,
+        "stakerFeeRatioForVoters": 20,
+        "thresholdConstA": "100000000000000000000",
+        "thresholdConstB": 3,
+        "votersGainRepRatioFromLostRep": 90,
+        "votersReputationLossRatio": 4
+      }
+    },
+    {
+      "name": "GenesisProtocol",
+      "boostedVotePeriodLimit": 7200,
+      "daoBountyConst": 30,
+      "daoBountyLimit": "500000000000000000000",
+      "minimumStakingFee": 0,
+      "preBoostedVotePeriodLimit": 7200,
+      "preBoostedVoteRequiredPercentage": 50,
+      "proposingRepRewardConstA": 5,
+      "proposingRepRewardConstB": 10,
+      "quietEndingPeriod": 1800,
+      "stakerFeeRatioForVoters": 20,
+      "thresholdConstA": "100000000000000000000",
+      "thresholdConstB": 3,
+      "votersGainRepRatioFromLostRep": 90,
+      "votersReputationLossRatio": 4
+    }
+  ]
+}

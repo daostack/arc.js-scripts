@@ -5,17 +5,24 @@ import {
   DAO,
   Web3,
   Address,
-  USchemeWrapperBase
+  USchemeWrapperBase,
+  WrapperService,
+  IVotingMachineWrapper
 } from "@daostack/arc.js";
-import { BigNumber } from '../node_modules/bignumber.js';
+import { BigNumber } from 'bignumber.js';
 
 /**
- * Output info about a universal scheme given avatar and scheme name
+ * Output info about an arc.js universal scheme given avatar and scheme name
  * @param web3 
  * @param networkName 
- * @param avatar 
+ * @param avatar
+ * @param schemeName
+ * @param votingMachineName - optionally supply name of a voting machine to see its parameters
  */
-export const run = async (web3: Web3, networkName: string, avatar: Address, schemeName: string): Promise<void> => {
+export const run = async (web3: Web3, networkName: string,
+  avatar: Address,
+  schemeName: string,
+  votingMachineName?: string): Promise<void> => {
 
   if (!avatar) {
     return Promise.reject("avatar was not supplied")
@@ -52,5 +59,17 @@ export const run = async (web3: Web3, networkName: string, avatar: Address, sche
   const perms = await wrapper.getSchemePermissions(avatar);
   console.log(`permissions: ${perms}`);
 
+  if (votingMachineName) {
+    const votingMachineWrapper = await WrapperService.factories[votingMachineName].at(params.votingMachineAddress) as IVotingMachineWrapper;
+    const vmParams = await votingMachineWrapper.getParameters(params.voteParametersHash);
+    console.log(`${votingMachineName} parameters:`);
+    for (const propName in vmParams) {
+      const prop = vmParams[propName];
+      if ((prop.s !== undefined) && (prop.e !== undefined) && (prop.c !== undefined)) {
+        vmParams[propName] = (<BigNumber>prop).toString();
+      }
+    }
+    console.dir(vmParams);
+  }
   return Promise.resolve();
 }

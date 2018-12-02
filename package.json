@@ -39,10 +39,11 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@daostack/arc.js": "0.0.0-alpha.81",
+    "@daostack/arc.js": "0.0.0-alpha.94",
     "@types/node": "^10.5.2",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
+    "cwd": "^0.10.0",
     "es6-promisify": "^6.0.0",
     "fs-extra": "^7.0.0",
     "growl": "~> 1.10.0",

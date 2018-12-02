@@ -1,3 +1,4 @@
+import { promisify } from 'es6-promisify';
 import {
   Web3,
   Utils,
@@ -23,22 +24,21 @@ import { Common } from './common';
  * 
  * @param web3 
  * @param networkName 
- * @param jsonSpecPath
+ * @param jsonSpec
  * @param gas optional gas amount.  if set to "max" then will use a high limit close to the current block limit
  */
 export const run = async (
   web3: Web3,
   networkName: string,
-  jsonSpecPath: string | object,
-  isRawJson: string = "false",
+  jsonSpec: string | object,
   gas?: string
 ): Promise<{ address: Address }> => {
 
-  if (!jsonSpecPath) {
-    throw new Error("jsonSpecPath was not supplied");
+  if (!jsonSpec) {
+    throw new Error("jsonSpec was not supplied");
   }
 
-  const spec = Common.isTruthy(isRawJson) ? jsonSpecPath : require(jsonSpecPath as string);
+  const spec = (typeof (jsonSpec) === "object") ? jsonSpec : require(jsonSpec as string);
 
   if (!spec.name) {
     throw new Error("contract name was not supplied");
@@ -63,6 +63,17 @@ export const run = async (
   console.log(`instantiating ${spec.name}`);
 
   const newContract = await truffleContract.new(...params);
+
+  // /**
+  //  * wait until mined
+  //  */
+  // while (true) {
+  //   const code = await promisify((callback: any): any =>
+  //     web3.eth.getCode(newContract.address, callback))();
+  //   if (code && (code.length)) {
+  //     break;
+  //   }
+  // }
 
   console.log(`new ${spec.name} address: ${newContract.address} `);
 

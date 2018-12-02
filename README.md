@@ -73,5 +73,6 @@ provided in your provider configuration file.
     ethTransfer | transfer ETH from one account to another
     proposalVote | cast a vote on the given proposal with the given voting machine
     proposalGpStake | stake on a vote on the given proposal with the given GenesisProtocol
+    schemeDump | show basic information about a scheme regstered to a DAO
     tokenTransfer | transfer tokens from one account to another
     tokenMint | mint tokens to an account

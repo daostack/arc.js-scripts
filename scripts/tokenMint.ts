@@ -46,10 +46,18 @@ export const run = async (
     return Promise.reject("amount must be given and greater than zero")
   }
 
-  console.log(`minting ${amount.toString()} tokens to ${to} on behalf of ${onBehalfOf}...`);
+  console.log(`minting token ${tokenAddress}`);
+  console.log(`${amount.toString()} tokens to ${to} on behalf of ${onBehalfOf}...`);
 
   // TODO:  use arc.js wrapper once available
   const token = (await Utils.requireContract("MintableToken")).at(tokenAddress);
+
+  // const supply = await token.totalSupply();
+
+  // if (supply.lt(amountBn)) {
+  //   console.log(`not enough supply to mint: ${supply.toString(10)}`);
+  // }
+
   const tx = await token.mint(to, amountBn, { from: onBehalfOf });
 
   const newBalance = web3.fromWei(await token.balanceOf(to));

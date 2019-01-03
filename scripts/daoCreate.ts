@@ -1,11 +1,11 @@
 import {
+  ConfigService,
+  DAO,
   InitializeArcJs,
   LoggingService,
   LogLevel,
-  DAO,
-  ConfigService,
-  Web3,
-  Utils
+  Utils,
+  Web3
 } from "@daostack/arc.js";
 import { Common } from './common';
 
@@ -29,9 +29,9 @@ interface FounderSpec {
  * Create a new DAO given a json spec that is the equivalent to the `NewDaoConfig`
  * expected by Arc.js's `DAO.new`.  The founder's tokens and reputation amounts
  * will be converted here into Wei.
- * @param web3 
- * @param networkName 
- * @param jsonSpecPath 
+ * @param web3
+ * @param networkName
+ * @param jsonSpecPath
  */
 export const run = async (
   web3: Web3,
@@ -40,9 +40,10 @@ export const run = async (
   isRawJson: string = "false"): Promise<DAO> => {
 
   if (!jsonSpecPath) {
-    return Promise.reject("jsonSpecPath was not supplied")
+    return Promise.reject("jsonSpecPath was not supplied");
   }
 
+  // tslint:disable-next-line: no-bitwise
   LoggingService.logLevel = LogLevel.info | LogLevel.error;
 
   await InitializeArcJs();
@@ -59,7 +60,7 @@ export const run = async (
       address: f.address,
       reputation: web3.toWei(f.reputation),
       tokens: web3.toWei(f.tokens),
-    }
+    };
   });
 
   console.log(`creating DAO with ${spec.founders.length} founders...`);
@@ -70,4 +71,4 @@ export const run = async (
   console.log(`native token: ${dao.token.address}`);
 
   return Promise.resolve(dao);
-}
+};

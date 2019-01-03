@@ -2,9 +2,12 @@ import { promisify } from 'es6-promisify';
 import {
   Web3,
   Utils,
-  Address
+  Address,
+  ConfigService
 } from "@daostack/arc.js";
 import { Common } from './common';
+import { BigNumber } from "bignumber.js";
+import axios from "axios";
 
 /**
  * Instantiate a contract given the json specification for it. 
@@ -26,12 +29,15 @@ import { Common } from './common';
  * @param networkName 
  * @param jsonSpec
  * @param gas optional gas amount.  if set to "max" then will use a high limit close to the current block limit
+ * @param gasPrice optional gas price.  if set to "estimate" then will use a gas price obtained from ethgastation.
+ * "estimate" only works on mainnet!
  */
 export const run = async (
   web3: Web3,
   networkName: string,
   jsonSpec: string | object,
-  gas?: string
+  gas: string = null,
+  gasPrice: string = null
 ): Promise<{ address: Address }> => {
 
   if (!jsonSpec) {
@@ -45,13 +51,36 @@ export const run = async (
   }
 
   const params = spec.constructorParams || [];
+  const web3Params = {} as any;
 
   if (gas) {
-    if (gas = "max") {
+    if (gas === "max") {
       gas = (await Common.computeMaxGasLimit(web3)).toString();
     }
-    params.push({ gas: Number.parseInt(gas) })
+    web3Params.gas = Number.parseInt(gas);
   }
+
+  if (gasPrice) {
+    if (gas === "estimate") {
+          ConfigService.set("gasPriceAdjustment", async (defaultGasPrice: BigNumber) => {
+          try {
+            const response = await axios.get('https://ethgasstation.info/json/ethgasAPI.json');
+            // the api gives results if 10*Gwei
+            const gasPrice = response.data.fast / 10;
+            return web3.toWei(gasPrice, 'gwei');
+          } catch (e) {
+            return defaultGasPrice;
+          }
+        });
+    }
+    else {
+      web3Params.gasPrice = Number.parseInt(gasPrice);
+    }
+  } else {
+    web3Params.gasPrice = 10000000000;
+  }
+
+  params.push(web3Params);
 
   let truffleContract;
   try {

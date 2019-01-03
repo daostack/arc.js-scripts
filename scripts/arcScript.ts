@@ -3,6 +3,7 @@
 import { Web3 } from "web3";
 import { Utils, ConfigService } from "@daostack/arc.js";
 import { promisify } from 'es6-promisify';
+var path = require('path');
 const fs = require("fs-extra");
 const commandLineArgs = require('command-line-args')
 const validUrl = require('valid-url');
@@ -30,12 +31,11 @@ class UrlDetails {
 
 const optionDefinitions = [
   { name: 'help', alias: 'h', type: Boolean, description: "show these command line options" },
-  { name: 'script', alias: 's', type: String, description: "[required] path to javascript script file, either absolute or relative to build/scripts" },
   { name: 'method', alias: 'm', type: String, description: "name of the method to execute, default: \"run\"" },
   { name: 'provider', alias: 'p', type: provider => new FileDetails(provider), description: "path to truffle-hdwallet-provider json configuration file" },
   { name: 'url', alias: 'u', type: url => new UrlDetails(url), description: "node url when not using truffle-hdwallet-provider, default: 'http://127.0.0.1'" },
   { name: 'port', alias: 'r', type: Number, description: "node port when not using truffle-hdwallet-provider, default: 8545" },
-  { name: 'extraParameters', alias: 'e', multiple: true, defaultOption: true, description: "optional parameters that if present will be passed as arguments to your script method (is not required to explicitely state the command name 'extraParameters')" }
+  { name: 'script', multiple: true, defaultOption: true, type: String, description: "[required] path to javascript script file, either absolute or relative to 'build' (or to 'build/scripts' if you have a custom scripts folder)" }
 ];
 
 const options = commandLineArgs(optionDefinitions);
@@ -106,10 +106,13 @@ if (options.port) {
   port = options.port;
 }
 
-if (!options.script) {
-  console.log(`script option is required`);
+if (!options.script || !options.script.length) {
+  console.log(`script name is required`);
   exit();
 }
+
+const scriptPath = path.normalize(options.script[0]);
+const extraParameters = options.script.slice(1);
 
 if (!options.method) {
   options.method = "run";
@@ -162,16 +165,14 @@ try {
 
         console.log(`Default account: ${accounts[0]}`);
 
-        if (!Array.isArray(options.extraParameters)) {
-          options.extraParameters = [];
-        }
+        console.log(`Executing ${scriptPath} ${extraParameters}`);
 
-        const script = require(options.script);
+        const script = require(scriptPath);
         const method = options.method;
 
         // console.log(`Executing ${method}`);
 
-        return script[method](web3, networkName, ...options.extraParameters)
+        return script[method](web3, networkName, ...extraParameters)
           .then(() => {
             // console.log(`Completed ${method}`);
             exit();

@@ -50,7 +50,7 @@ export const run = async (
   console.log(`${amount.toString()} tokens to ${to} on behalf of ${onBehalfOf}...`);
 
   // TODO:  use arc.js wrapper once available
-  const token = (await Utils.requireContract("MintableToken")).at(tokenAddress);
+  const token = (await Utils.requireContract("DAOToken")).at(tokenAddress);
 
   // const supply = await token.totalSupply();
 

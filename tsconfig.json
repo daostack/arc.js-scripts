@@ -4,6 +4,12 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "preserveConstEnums": true,
+    "outDir": "build",
+    "rootDirs": [
+      "scripts",
+      "local_scripts",
+      "custom_typings/system.d.ts"
+    ],
     "sourceMap": true,
     "declaration": true,
     "importHelpers": true,
@@ -13,10 +19,6 @@
       "dom"
     ]
   },
-  "include": [
-    "./**/*",
-    "custom_typings/system.d.ts"
-  ],
   "exclude": [
     "node_modules",
     "build"

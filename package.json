@@ -4,7 +4,7 @@
   "description": "scripts that run against @daostack/arc.js",
   "scripts": {
     "clean": "rimraf build/**/*",
-    "build": "npm run clean && tsc --outDir build",
+    "build": "npm run clean && tsc",
     "ganache": "npm explore @daostack/arc.js -- npm start ganache",
     "migrateContracts": "npm explore @daostack/arc.js -- npm start migrateContracts",
     "createGenesisDao": "npm explore @daostack/arc.js -- npm start createGenesisDao"
@@ -39,8 +39,9 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@daostack/arc.js": "0.0.0-alpha.95",
+    "@daostack/arc.js": "0.0.0-alpha.106",
     "@types/node": "^10.5.2",
+    "axios": "^0.18.0",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
     "cwd": "^0.10.0",
@@ -54,5 +55,7 @@
     "valid-url": "^1.0.9",
     "web3-provider-engine": "github:MetaMask/provider-engine"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "tslint": "^5.12.0"
+  }
 }

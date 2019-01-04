@@ -7,7 +7,7 @@
     "outDir": "build",
     "rootDirs": [
       "scripts",
-      "local_scripts",
+      "dutchx_scripts",
       "custom_typings/system.d.ts"
     ],
     "sourceMap": true,

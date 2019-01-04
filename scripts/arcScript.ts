@@ -82,7 +82,7 @@ let url;
 let port;
 
 if (options.provider) {
-  providerConfigPath = path.join(__dirname, "..", "..", "local_scripts", "providers", options.provider.filename);
+  providerConfigPath = options.provider;
 }
 
 if (options.url) {

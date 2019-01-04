@@ -1,21 +1,21 @@
 /* tslint:disable:no-console */
 /* tslint:disable:no-var-requires */
-import { Web3 } from "web3";
-import { Utils, ConfigService } from "@daostack/arc.js";
+import { ConfigService, Utils } from "@daostack/arc.js";
 import { promisify } from 'es6-promisify';
-var path = require('path');
+import { Web3 } from "web3";
+const path = require("path");
 const fs = require("fs-extra");
-const commandLineArgs = require('command-line-args')
-const validUrl = require('valid-url');
-const commandLineUsage = require('command-line-usage');
+const commandLineArgs = require("command-line-args");
+const validUrl = require("valid-url");
+const commandLineUsage = require("command-line-usage");
 
 class FileDetails {
   public filename: string;
   public exists: boolean;
 
   constructor(filename) {
-    this.filename = filename
-    this.exists = fs.existsSync(filename)
+    this.filename = filename;
+    this.exists = fs.existsSync(filename);
   }
 }
 
@@ -24,36 +24,39 @@ class UrlDetails {
   public isValid: boolean;
 
   constructor(url) {
-    this.url = url
+    this.url = url;
     this.isValid = validUrl.isUri(url);
   }
 }
 
+// tslint:disable: max-line-length
+
 const optionDefinitions = [
-  { name: 'help', alias: 'h', type: Boolean, description: "show these command line options" },
-  { name: 'method', alias: 'm', type: String, description: "name of the method to execute, default: \"run\"" },
-  { name: 'provider', alias: 'p', type: provider => new FileDetails(provider), description: "path to truffle-hdwallet-provider json configuration file" },
-  { name: 'url', alias: 'u', type: url => new UrlDetails(url), description: "node url when not using truffle-hdwallet-provider, default: 'http://127.0.0.1'" },
-  { name: 'port', alias: 'r', type: Number, description: "node port when not using truffle-hdwallet-provider, default: 8545" },
-  { name: 'script', multiple: true, defaultOption: true, type: String, description: "[required] path to javascript script file, either absolute or relative to 'build' (or to 'build/scripts' if you have a custom scripts folder)" }
+  { name: "help", alias: "h", type: Boolean, description: "show these command line options" },
+  { name: "method", alias: "m", type: String, description: "name of the method to execute, default: \"run\"" },
+  { name: "provider", alias: "p", type: provider => new FileDetails(provider), description: "path to truffle-hdwallet-provider json configuration file" },
+  { name: "url", alias: "u", type: url => new UrlDetails(url), description: "node url when not using truffle-hdwallet-provider, default: 'http://127.0.0.1'" },
+  { name: "port", alias: "r", type: Number, description: "node port when not using truffle-hdwallet-provider, default: 8545" },
+  { name: "script", multiple: true, defaultOption: true, type: String, description: "[required] path to javascript script file, either absolute or relative to 'build' (or to 'build/scripts' if you have a custom scripts folder)" },
 ];
+
+// module.paths.concat([]);
 
 const options = commandLineArgs(optionDefinitions);
 
 const usage = (): void => {
   const sections = [
     {
-      header: 'arcScript',
-      content: 'Run scripts agains DAOstack Arc.js.'
+      content: "Run scripts agains DAOstack Arc.js.",
+      header: "arcScript",
     },
     {
-      header: 'Options',
-      optionList: optionDefinitions
-    }
+      header: "Options",
+      optionList: optionDefinitions,
+    },
   ];
 
-  const usage = commandLineUsage(sections);
-  console.log(usage);
+  console.log(commandLineUsage(sections));
 };
 
 let provider;
@@ -79,11 +82,7 @@ let url;
 let port;
 
 if (options.provider) {
-  if (!options.provider.exists) {
-    console.log(`provider file does not exist`);
-    exit();
-  }
-  providerConfigPath = options.provider.filename;
+  providerConfigPath = path.join(__dirname, "..", "..", "local_scripts", "providers", options.provider.filename);
 }
 
 if (options.url) {
@@ -128,14 +127,14 @@ const connectToNetwork = async (): Promise<void> => {
   providerConfig = require(providerConfigPath);
 
   const HDWalletProvider = require("truffle-hdwallet-provider");
-  const NonceTrackerSubprovider = require("web3-provider-engine/subproviders/nonce-tracker")
+  const NonceTrackerSubprovider = require("web3-provider-engine/subproviders/nonce-tracker");
   console.log(`Provider: '${providerConfig.providerUrl}'`);
   console.log(`Account: '${providerConfig.mnemonic}'`);
   provider = new HDWalletProvider(providerConfig.mnemonic, providerConfig.providerUrl);
   if (providerConfig.name && (providerConfig.name.toLowerCase() === "infura")) {
     console.log("applying NonceTrackerSubprovider");
     // see https://ethereum.stackexchange.com/a/50038/21913
-    var nonceTracker = new NonceTrackerSubprovider();
+    let nonceTracker = new NonceTrackerSubprovider();
     provider.engine._providers.unshift(nonceTracker);
     nonceTracker.setEngine(provider.engine);
   }

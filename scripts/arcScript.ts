@@ -147,11 +147,16 @@ try {
     if (providerConfigPath || mnemonic) {
       await connectToNetwork();
     } else {
-      const index = url.startsWith("http://") ? 7 : url.startsWith("https://") ? 8 : 0;
-      if (index) {
-        url = url.slice(index);
+      if (url) {
+        const index = url.startsWith("http://") ? 7 : url.startsWith("https://") ? 8 : 0;
+
+        if (index) {
+          url = url.slice(index);
+        }
+
+        ConfigService.set("providerUrl", url); 
       }
-      if (url) { ConfigService.set("providerUrl", url); }
+
       if (port) { ConfigService.set("providerPort", port); }
     }
 

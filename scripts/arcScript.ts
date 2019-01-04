@@ -1,7 +1,7 @@
 /* tslint:disable:no-console */
 /* tslint:disable:no-var-requires */
 import { ConfigService, Utils } from "@daostack/arc.js";
-import { promisify } from 'es6-promisify';
+import { promisify } from "es6-promisify";
 import { Web3 } from "web3";
 const path = require("path");
 const fs = require("fs-extra");
@@ -23,7 +23,7 @@ class FileDetails {
 
 const optionDefinitions = [
   { name: "help", alias: "h", type: Boolean, description: "show these command line options" },
-  { name: "script", multiple: true, defaultOption: true, type: String, description: "(required) name of javascript script file, located in 'build' or ('build/scripts' or `build/local_scripts`) if you have a 'local_scripts' folder" },
+  { name: "script", multiple: true, defaultOption: true, type: String, description: "(required) path to javascript script file, either absolute or relative to 'build' (or to 'build/scripts' if you are compiling folders in addition to the scripts folder)" },
   { name: "method", alias: "m", type: String, description: "name of the method to execute, default: \"run\"" },
   { name: "providerConfig", alias: "c", type: providerConfig => new FileDetails(providerConfig), description: "absolute path to a JSON file specifying a mnemonic and url (including port)" },
   { name: "url", alias: "u", type: String, description: "url when not using providerConfig, default: 'http://127.0.0.1'" },
@@ -48,8 +48,7 @@ const usage = (): void => {
     },
   ];
 
-  const usage = commandLineUsage(sections);
-  console.log(usage);
+  console.log(commandLineUsage(sections));
 };
 
 let provider;
@@ -148,11 +147,16 @@ try {
     if (providerConfigPath || mnemonic) {
       await connectToNetwork();
     } else {
-      const index = url.startsWith("http://") ? 7 : url.startsWith("https://") ? 8 : 0;
-      if (index) {
-        url = url.slice(index);
+      if (url) {
+        const index = url.startsWith("http://") ? 7 : url.startsWith("https://") ? 8 : 0;
+
+        if (index) {
+          url = url.slice(index);
+        }
+
+        ConfigService.set("providerUrl", url); 
       }
-      if (url) { ConfigService.set("providerUrl", url); }
+
       if (port) { ConfigService.set("providerPort", port); }
     }
 

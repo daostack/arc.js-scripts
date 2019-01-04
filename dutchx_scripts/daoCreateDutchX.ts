@@ -26,7 +26,7 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
 
   ConfigService.set("estimateGas", true);
 
-  const daoSchema = require(`../../local_scripts/specsNewDaos/dutchX.${networkName.toLowerCase()}.json`);
+  const daoSchema = require(`../../dutchx_scripts/specsNewDaos/dutchX.${networkName.toLowerCase()}.json`);
 
   const lockingEth4Reputation =
     await LockingEth4ReputationFactory.at((await contractNew(web3, networkName, { name: "LockingEth4Reputation" }, "max", "50000000000") as Lock4ReputationContract).address);
@@ -140,6 +140,8 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
   // const lockingPeriodStartDate_Mgn = new Date("2019-01-10T11:00:00.000+0200");
   // const lockingPeriodEndDate_Mgn   = new Date("2019-01-10T12:00:00.000+0200");
   // const numberOfAuctions = 6;
+  // const maxLockPeriod = 43200; // 12 hours in seconds
+  // const reputationReward = 100000000;
 
   const lockingPeriodStartDate = new Date("2019-01-09T12:00:00.000+0200");
   const lockingPeriodEndDate   = new Date("2019-01-10T12:00:00.000+0200");

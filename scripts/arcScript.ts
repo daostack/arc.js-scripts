@@ -32,7 +32,7 @@ const optionDefinitions = [
 ];
 
 module.paths.push(path.join(__dirname, "../scripts"));
-module.paths.push(path.join(__dirname, "../local_scripts"));
+module.paths.push(path.join(__dirname, "../dutchx_scripts"));
 
 const options = commandLineArgs(optionDefinitions);
 

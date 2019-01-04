@@ -122,7 +122,7 @@ const connectToNetwork = async (): Promise<void> => {
   const providerConfig = providerConfigPath ? require(providerConfigPath) :
   {
     mnemonic,
-    providerUrl: `${url || 'http://127.0.0.1'}:${ port || "8545" }`,
+    providerUrl: `${url || "http://127.0.0.1"}:${ port || "8545" }`,
   };
 
   const HDWalletProvider = require("truffle-hdwallet-provider");

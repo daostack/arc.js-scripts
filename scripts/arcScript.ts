@@ -1,7 +1,7 @@
 /* tslint:disable:no-console */
 /* tslint:disable:no-var-requires */
 import { ConfigService, Utils } from "@daostack/arc.js";
-import { promisify } from 'es6-promisify';
+import { promisify } from "es6-promisify";
 import { Web3 } from "web3";
 const path = require("path");
 const fs = require("fs-extra");
@@ -19,28 +19,20 @@ class FileDetails {
   }
 }
 
-class UrlDetails {
-  public url: string;
-  public isValid: boolean;
-
-  constructor(url) {
-    this.url = url;
-    this.isValid = validUrl.isUri(url);
-  }
-}
-
 // tslint:disable: max-line-length
 
 const optionDefinitions = [
   { name: "help", alias: "h", type: Boolean, description: "show these command line options" },
+  { name: "script", multiple: true, defaultOption: true, type: String, description: "(required) path to javascript script file, either absolute or relative to 'build' (or to 'build/scripts' if you are compiling folders in addition to the scripts folder)" },
   { name: "method", alias: "m", type: String, description: "name of the method to execute, default: \"run\"" },
-  { name: "provider", alias: "p", type: provider => new FileDetails(provider), description: "path to truffle-hdwallet-provider json configuration file" },
-  { name: "url", alias: "u", type: url => new UrlDetails(url), description: "node url when not using truffle-hdwallet-provider, default: 'http://127.0.0.1'" },
-  { name: "port", alias: "r", type: Number, description: "node port when not using truffle-hdwallet-provider, default: 8545" },
-  { name: "script", multiple: true, defaultOption: true, type: String, description: "[required] path to javascript script file, either absolute or relative to 'build' (or to 'build/scripts' if you have a custom scripts folder)" },
+  { name: "providerConfig", alias: "c", type: providerConfig => new FileDetails(providerConfig), description: "absolute path to a JSON file specifying a mnemonic and url (including port)" },
+  { name: "url", alias: "u", type: String, description: "url when not using providerConfig, default: 'http://127.0.0.1'" },
+  { name: "port", alias: "p", type: Number, description: "port when not using providerConfig, default: 8545" },
+  { name: "mnemonic", alias: "n", type: String, description: "mnemonic like \"bird fish sheep ....\", when not using providerConfig" },
 ];
 
-// module.paths.concat([]);
+module.paths.push(path.join(__dirname, "../scripts"));
+module.paths.push(path.join(__dirname, "../local_scripts"));
 
 const options = commandLineArgs(optionDefinitions);
 
@@ -77,31 +69,38 @@ if (options.help) {
   exit();
 }
 
-let providerConfigPath;
-let url;
-let port;
+let providerConfigPath: string;
+let url: string;
+let port: number;
+let mnemonic: string;
 
-if (options.provider) {
-  providerConfigPath = options.provider;
+if (options.providerConfig && options.mnemonic) {
+  console.log(`can't supply providerConfig and mnemonic at the same`);
+  exit();
+}
+
+if (options.providerConfig && (options.url || options.port)) {
+  console.log(`can't supply providerConfig and url or port at the same`);
+  exit();
+}
+
+// if (options.mnemonic && !options.url) {
+//   console.log(`must supply mnemonic and url together`);
+//   exit();
+// }
+
+if (options.mnemonic) {
+  mnemonic = options.mnemonic;
+} else if (options.providerConfig) {
+  if (!options.providerConfig.exists) {
+    console.log(`provider file does not exist`);
+    exit();
+  }
+  providerConfigPath = options.providerConfig.filename;
 }
 
 if (options.url) {
-  if (providerConfigPath) {
-    console.log(`can't supply provider and url at the same`);
-    exit();
-  }
-  if (!options.url.isValid) {
-    console.log(`url is not a valid url`);
-    exit();
-  }
-  url = options.url.url;
-}
-
-if (options.port) {
-  if (providerConfigPath) {
-    console.log(`can't supply provider and port at the same`);
-    exit();
-  }
+  url = options.url;
   port = options.port;
 }
 
@@ -120,11 +119,11 @@ if (!options.method) {
 const connectToNetwork = async (): Promise<void> => {
   const webConstructor = require("web3");
 
-  let providerConfig;
-
-  console.log(`providerConfig at: ${providerConfigPath}`);
-
-  providerConfig = require(providerConfigPath);
+  const providerConfig = providerConfigPath ? require(providerConfigPath) :
+  {
+    mnemonic,
+    providerUrl: `${url || 'http://127.0.0.1'}:${ port || "8545" }`,
+  };
 
   const HDWalletProvider = require("truffle-hdwallet-provider");
   const NonceTrackerSubprovider = require("web3-provider-engine/subproviders/nonce-tracker");
@@ -134,7 +133,7 @@ const connectToNetwork = async (): Promise<void> => {
   if (providerConfig.name && (providerConfig.name.toLowerCase() === "infura")) {
     console.log("applying NonceTrackerSubprovider");
     // see https://ethereum.stackexchange.com/a/50038/21913
-    let nonceTracker = new NonceTrackerSubprovider();
+    const nonceTracker = new NonceTrackerSubprovider();
     provider.engine._providers.unshift(nonceTracker);
     nonceTracker.setEngine(provider.engine);
   }
@@ -145,9 +144,13 @@ try {
 
   const runScript = async (): Promise<void> => {
 
-    if (providerConfigPath) {
+    if (providerConfigPath || mnemonic) {
       await connectToNetwork();
     } else {
+      const index = url.startsWith("http://") ? 7 : url.startsWith("https://") ? 8 : 0;
+      if (index) {
+        url = url.slice(index);
+      }
       if (url) { ConfigService.set("providerUrl", url); }
       if (port) { ConfigService.set("providerPort", port); }
     }

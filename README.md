@@ -6,6 +6,7 @@ Scripts that run against @daostack/arc.js
 Clone or fork the arc.js-scripts repository from GitHub, then:
 
 ```
+npm install
 npm run build
 ```
 
@@ -26,33 +27,56 @@ npm run build
 
     Get help on command line options:
     
-    `node ./build/scripts/arcScript.js -h`
+    ```
+    npm run help
+    ```
 
     Run the example script against a local node with default url and port:
 
-    `node ./build/scripts/arcScript.js -s ./example.js`
+    ```
+    npm run script example
+    ```
+
+    It will look for your script in "build/scripts" or "build/local_scripts".
 
 ## Use truffle-hdwallet-provider
 
-  If you want to use the truffle-hdwallet-provider rather than a local node then you must supply the `provider` option:
+  If you want to use the truffle-hdwallet-provider rather than a local node then you may supply the `providerConfig` option:
 
-  `node ./build/scripts/arcScript.js -p '[pathToConfig]'`
+  ```
+  npm run script -- -c "/path/to/a/json/file.json" example
+  ```
 
   The path should reference a json file containing a truffle-hdwallet-provider configuration, looking something like this:
 
   <pre>
   {
+    "name: "kovan",
     "mnemonic": "...",
     "providerUrl": "https://kovan.infura.io/..."
   }</pre>
-    
+
+  Instead of using a configuration file you may pass a mnemonic with optionally a uri and port:
+
+  ```
+  npm run script -- -n "file turkey house..." -u "http://127.198.0.1" -p 8890` example
+  ```
+
+  Or with default url and port:
+
+  ```
+  npm run script -- -n "file turkey house..." example
+  ```
+
 ## Notes
 
 * Your method may call `InitializeArcJs` for cases where you want to use Arc contracts (see scripts/example.ts).
 
-* TypeScript is not necessary, you can create your JavaScript script files however you want.  But if you want you can easily create scripts using TypeScript by placing your .ts files anywhere under the project root  folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build" folder.  Suppose you put your typescript files in another folder called "local_scripts" in the project root.  Then after running `npm run build` you can run your script like this:
+* TypeScript is not necessary, you can create your JavaScript script files however you want.  But if you want you can easily create scripts using TypeScript by placing your .ts files anywhere under the project root  folder and running `npm run build` to compile them.  The generated JavaScript will appear in the "build" folder.  If you put your typescript files in another folder called "local_scripts" in the project root, then after running `npm run build` you can run your script like this:
 
-    `node ./build/scripts/arcScript.js -s ../local_scripts/[yourscript].js`
+    ```
+    npm run script yourScript
+    ```
 
 * If you are using truffle-hdwallet-provider and you run a script and it connects to the provider but then returns without executing your script, make sure that a node is listening on the url you
 provided in your provider configuration file.

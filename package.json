@@ -5,6 +5,8 @@
   "scripts": {
     "clean": "rimraf build/**/*",
     "build": "npm run clean && tsc",
+    "help": "node ./build/scripts/arcScript.js -h",
+    "script": "node ./build/scripts/arcScript.js",
     "ganache": "npm explore @daostack/arc.js -- npm start ganache",
     "migrateContracts": "npm explore @daostack/arc.js -- npm start migrateContracts",
     "createGenesisDao": "npm explore @daostack/arc.js -- npm start createGenesisDao"

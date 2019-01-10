@@ -42,6 +42,7 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
   let priceOracleInterfaceAddress: Address;
   let priceOracleInterfaceMock: any;
   let gnoTokenAddress: Address;
+  let externalTokenLockerMock: { lock: (amount: string, options: { from: Address }) => Promise<void>, address: Address };
   const genTokenAddress = await Utils.getGenTokenAddress();
 
   switch (networkName) {
@@ -55,12 +56,14 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
 
       await priceOracleInterfaceMock.setTokenPrice(gnoTokenAddress, 380407, 200000000);
 
-      const externalTokenLockerMock =
+      externalTokenLockerMock =
         await contractNew(web3, networkName, { name: "ExternalTokenLockerMock" }, "max", "50000000000") as any;
 
       externalTokenLockerAddress = externalTokenLockerMock.address;
 
-      await externalTokenLockerMock.lock(100000000000000000000, { from: accounts[0] });
+      await externalTokenLockerMock.lock("100000000000000000000", { from: accounts[0] });
+      await externalTokenLockerMock.lock("100000000000000000000", { from: accounts[1] });
+      await externalTokenLockerMock.lock("100000000000000000000", { from: accounts[2] });
 
       break;
     case "Kovan":
@@ -75,14 +78,22 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
       await priceOracleInterfaceMock.setTokenPrice(gnoTokenAddress, 380407, 200000000);
       await priceOracleInterfaceMock.setTokenPrice("0x4edc383adea781762b74e7082c03f423523e61bb", 380407, 200000000);
       await priceOracleInterfaceMock.setTokenPrice("0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf", 380407, 200000000);
+
+      externalTokenLockerMock =
+        await contractNew(web3, networkName, { name: "ExternalTokenLockerMock" }, "max", "50000000000") as any;
+
+      externalTokenLockerAddress = externalTokenLockerMock.address;
+
+      await externalTokenLockerMock.lock("100000000000000000000", { from: accounts[0] });
+
       break;
     case "Rinkeby":
       externalTokenLockerAddress = "0x4edc383adea781762b74e7082c03f423523e61bb";
       gnoTokenAddress = "0xd0dab4e640d95e9e8a47545598c33e31bdb53c7c";
       /**
-       * This is just one they recently deployed.  It changes with each new DAO.
+       * This is just one they recently deployed.  It changes with each new DAO.  getPrice currently returns all zeros, need to find a better one
        */
-      priceOracleInterfaceAddress = "0xe7Fd17DEa742806B600cBd29DaC91f5686FacBe2";
+      priceOracleInterfaceAddress = "0x1C54f6146bA3656739A5c0781Cc054FA0C3951C1";
       // priceOracleInterfaceMock =
       //   await contractNew(web3, networkName, { name: "PriceOracleMock" }, "max", "50000000000") as any;
 
@@ -122,13 +133,11 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
         address: auction4Reputation.address,
         name: "Auction4Reputation",
       },
-      // {
-      //   "name": "FixedReputationAllocation",
-      //   "address": fixedReputationAllocation.address
-      // },
     ]];
 
   const dao = (await daoCreate(web3, networkName, daoSchema, "true")) as DAO;
+
+// tslint:disable: variable-name
 
   // final official dates:
   // "lockingPeriodStartDate": "2019-02-18T12:00:00.000",
@@ -143,19 +152,38 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
   // const maxLockPeriod = 43200; // 12 hours in seconds
   // const reputationReward = 100000000;
 
-  const lockingPeriodStartDate = new Date("2019-01-09T12:00:00.000+0200");
-  const lockingPeriodEndDate   = new Date("2019-01-10T12:00:00.000+0200");
+// model II:
+  // const lockingPeriodStartDate      = new Date("2019-01-09T12:00:00.000+0200");
+  // const lockingPeriodEndDate        = new Date("2019-01-09T17:00:00.000+0200");
+  // const lockingPeriodStartDate_Mgn  = new Date("2019-01-09T16:00:00.000+0200");
+  // const lockingPeriodEndDate_Mgn    = new Date("2019-01-09T17:00:00.000+0200");
+  // const numberOfAuctions = 5;
+  // const maxLockPeriod = 10800; // 3 hours in seconds
+  // const reputationReward = 100000000;
 
-// tslint:disable: variable-name
-  const lockingPeriodStartDate_Mgn = new Date("2019-01-10T11:00:00.000+0200");
-  const lockingPeriodEndDate_Mgn   = new Date("2019-01-10T12:00:00.000+0200");
+// alex:
+  // const lockingPeriodStartDate = new Date("2019-01-09T12:00:00.000+0200");
+  // const lockingPeriodEndDate   = new Date("2019-01-10T12:00:00.000+0200");
+  // const lockingPeriodStartDate_Mgn = new Date("2019-01-10T11:00:00.000+0200");
+  // const lockingPeriodEndDate_Mgn   = new Date("2019-01-10T12:00:00.000+0200");
+  // const numberOfAuctions = 6;
+  // const maxLockPeriod = 43200; // 12 hours in seconds
+  // const reputationReward = 100000000;
 
-  const numberOfAuctions = 6;
+//  const maxLockPeriod = 31536000; // one year (365 days) in seconds
+
+  const lockingPeriodStartDate      = new Date("2019-01-09T12:00:00.000+0200");
+  const lockingPeriodEndDate        = new Date("2019-06-09T17:00:00.000+0200");
+  const lockingPeriodStartDate_Mgn  = new Date("2019-01-09T16:00:00.000+0200");
+  const lockingPeriodEndDate_Mgn    = new Date("2019-06-09T17:00:00.000+0200");
+
+  const numberOfAuctions = 5;
   // note this may not come out even with the endDate
   const auctionPeriod = ((lockingPeriodEndDate.getTime() - lockingPeriodStartDate.getTime()) / numberOfAuctions) / 1000;
   const redeemEnableDate = lockingPeriodEndDate;
-  const maxLockPeriod = 43200; // 12 hours in seconds
-  const reputationReward = 100000000;
+  const maxLockPeriod = 10800; // 3 hours in seconds
+
+  const reputationReward = 25000000;
 
   console.log(`lockingPeriodStartDate: ${lockingPeriodStartDate.toString()}`);
   console.log(`lockingPeriodEndDate: ${lockingPeriodEndDate.toString()}`);
@@ -202,7 +230,7 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
       avatarAddress: dao.avatar.address,
       numberOfAuctions,
       redeemEnableTime: redeemEnableDate,
-      reputationReward: web3.toWei(reputationReward),
+      reputationReward: web3.toWei(reputationReward / numberOfAuctions),
       tokenAddress: genTokenAddress,
       walletAddress: dao.avatar.address,
     }
@@ -218,6 +246,8 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
 
   if (networkName === "Ganache") {
     await tokenMint(web3, networkName, gnoTokenAddress, "100", accounts[0]);
+    await tokenMint(web3, networkName, gnoTokenAddress, "100", accounts[1]);
+    await tokenMint(web3, networkName, gnoTokenAddress, "100", accounts[2]);
   }
 
   return Promise.resolve();

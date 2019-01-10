@@ -36,8 +36,7 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
     await ExternalLocking4ReputationFactory.at((await contractNew(web3, networkName, { name: "ExternalLocking4Reputation" }, "max", "50000000000") as Lock4ReputationContract).address);
   const auction4Reputation =
     await Auction4ReputationFactory.at((await contractNew(web3, networkName, { name: "Auction4Reputation" }, "max", "50000000000") as Lock4ReputationContract).address);
-  // const fixedReputationAllocation =
-  //   await FixedReputationAllocationFactory.at((await contractNew(web3, networkName, { "name": "FixedReputationAllocation" }, "max", "50000000000") as Lock4ReputationContract).address);
+
   let externalTokenLockerAddress: Address;
   let priceOracleInterfaceAddress: Address;
   let priceOracleInterfaceMock: any;
@@ -146,44 +145,48 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
 // model dates:
   // const lockingPeriodStartDate = new Date("2019-01-09T12:00:00.000+0200");
   // const lockingPeriodEndDate   = new Date("2019-01-10T12:00:00.000+0200");
-  // const lockingPeriodStartDate_Mgn = new Date("2019-01-10T11:00:00.000+0200");
-  // const lockingPeriodEndDate_Mgn   = new Date("2019-01-10T12:00:00.000+0200");
-  // const numberOfAuctions = 6;
-  // const maxLockPeriod = 43200; // 12 hours in seconds
-  // const reputationReward = 100000000;
+  // const lockingPeriodStartDate_mgn = new Date("2019-01-10T11:00:00.000+0200");
+  // const lockingPeriodEndDate_mgn   = new Date("2019-01-10T12:00:00.000+0200");
+  // const NUM_AUCTIONS = 6;
+  // const MAX_LOCK_PERIOD = 43200; // 12 hours in seconds
+  // const TOTAL_REP_REWARD = 100000000;
 
 // model II:
   // const lockingPeriodStartDate      = new Date("2019-01-09T12:00:00.000+0200");
   // const lockingPeriodEndDate        = new Date("2019-01-09T17:00:00.000+0200");
-  // const lockingPeriodStartDate_Mgn  = new Date("2019-01-09T16:00:00.000+0200");
-  // const lockingPeriodEndDate_Mgn    = new Date("2019-01-09T17:00:00.000+0200");
-  // const numberOfAuctions = 5;
-  // const maxLockPeriod = 10800; // 3 hours in seconds
-  // const reputationReward = 100000000;
+  // const lockingPeriodStartDate_mgn  = new Date("2019-01-09T16:00:00.000+0200");
+  // const lockingPeriodEndDate_mgn    = new Date("2019-01-09T17:00:00.000+0200");
+  // const NUM_AUCTIONS = 5;
+  // const MAX_LOCK_PERIOD = 10800; // 3 hours in seconds
+  // const TOTAL_REP_REWARD = 100000000;
 
 // alex:
   // const lockingPeriodStartDate = new Date("2019-01-09T12:00:00.000+0200");
   // const lockingPeriodEndDate   = new Date("2019-01-10T12:00:00.000+0200");
-  // const lockingPeriodStartDate_Mgn = new Date("2019-01-10T11:00:00.000+0200");
-  // const lockingPeriodEndDate_Mgn   = new Date("2019-01-10T12:00:00.000+0200");
-  // const numberOfAuctions = 6;
-  // const maxLockPeriod = 43200; // 12 hours in seconds
-  // const reputationReward = 100000000;
+  // const lockingPeriodStartDate_mgn = new Date("2019-01-10T11:00:00.000+0200");
+  // const lockingPeriodEndDate_mgn   = new Date("2019-01-10T12:00:00.000+0200");
+  // const NUM_AUCTIONS = 6;
+  // const MAX_LOCK_PERIOD = 43200; // 12 hours in seconds
+  // const TOTAL_REP_REWARD = 100000000;
 
-//  const maxLockPeriod = 31536000; // one year (365 days) in seconds
+//  const MAX_LOCK_PERIOD = 31536000; // one year (365 days) in seconds
 
   const lockingPeriodStartDate      = new Date("2019-01-09T12:00:00.000+0200");
   const lockingPeriodEndDate        = new Date("2019-06-09T17:00:00.000+0200");
-  const lockingPeriodStartDate_Mgn  = new Date("2019-01-09T16:00:00.000+0200");
-  const lockingPeriodEndDate_Mgn    = new Date("2019-06-09T17:00:00.000+0200");
+  const lockingPeriodStartDate_mgn  = new Date("2019-01-09T16:00:00.000+0200");
+  const lockingPeriodEndDate_mgn    = new Date("2019-06-09T17:00:00.000+0200");
 
-  const numberOfAuctions = 5;
+  const NUM_AUCTIONS = 5;
   // note this may not come out even with the endDate
-  const auctionPeriod = ((lockingPeriodEndDate.getTime() - lockingPeriodStartDate.getTime()) / numberOfAuctions) / 1000;
-  const redeemEnableDate = lockingPeriodEndDate;
-  const maxLockPeriod = 10800; // 3 hours in seconds
+  const AUCTION_PERIOD = ((lockingPeriodEndDate.getTime() - lockingPeriodStartDate.getTime()) / NUM_AUCTIONS) / 1000;
+  const REDEEM_ENABLE_DATE = lockingPeriodEndDate;
+  const MAX_LOCK_PERIOD = 10800; // 3 hours in seconds
 
-  const reputationReward = 25000000;
+  const TOTAL_REP_REWARD = 1000000000;
+  const AUCTION_BIDDING_RATIO = .1;
+  const TOKEN_LOCKING_RATIO = .3;
+  const ETH_LOCKING_RATIO = .08;
+  const EXTERNAL_LOCKING_RATIO = .5;
 
   console.log(`lockingPeriodStartDate: ${lockingPeriodStartDate.toString()}`);
   console.log(`lockingPeriodEndDate: ${lockingPeriodEndDate.toString()}`);
@@ -193,9 +196,9 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
       avatarAddress: dao.avatar.address,
       lockingEndTime: lockingPeriodEndDate,
       lockingStartTime: lockingPeriodStartDate,
-      maxLockingPeriod: maxLockPeriod,
-      redeemEnableTime: redeemEnableDate,
-      reputationReward: web3.toWei(reputationReward),
+      maxLockingPeriod: MAX_LOCK_PERIOD,
+      redeemEnableTime: REDEEM_ENABLE_DATE,
+      reputationReward: web3.toWei(TOTAL_REP_REWARD * ETH_LOCKING_RATIO),
     }
   );
 
@@ -204,10 +207,10 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
       avatarAddress: dao.avatar.address,
       externalLockingContract: externalTokenLockerAddress,
       getBalanceFuncSignature: "lockedTokenBalances(address)",
-      lockingEndTime: lockingPeriodEndDate_Mgn,
-      lockingStartTime: lockingPeriodStartDate_Mgn,
-      redeemEnableTime: redeemEnableDate,
-      reputationReward: web3.toWei(reputationReward),
+      lockingEndTime: lockingPeriodEndDate_mgn,
+      lockingStartTime: lockingPeriodStartDate_mgn,
+      redeemEnableTime: REDEEM_ENABLE_DATE,
+      reputationReward: web3.toWei(TOTAL_REP_REWARD * EXTERNAL_LOCKING_RATIO),
     }
   );
 
@@ -216,33 +219,25 @@ export const run = async (web3: Web3, networkName: string): Promise<void> => {
       avatarAddress: dao.avatar.address,
       lockingEndTime: lockingPeriodEndDate,
       lockingStartTime: lockingPeriodStartDate,
-      maxLockingPeriod: maxLockPeriod,
+      maxLockingPeriod: MAX_LOCK_PERIOD,
       priceOracleContract: priceOracleInterfaceAddress,
-      redeemEnableTime: redeemEnableDate,
-      reputationReward: web3.toWei(reputationReward),
+      redeemEnableTime: REDEEM_ENABLE_DATE,
+      reputationReward: web3.toWei(TOTAL_REP_REWARD * TOKEN_LOCKING_RATIO),
     }
   );
 
   await auction4Reputation.initialize(
     {
-      auctionPeriod,
+      auctionPeriod: AUCTION_PERIOD,
       auctionsStartTime: lockingPeriodStartDate,
       avatarAddress: dao.avatar.address,
-      numberOfAuctions,
-      redeemEnableTime: redeemEnableDate,
-      reputationReward: web3.toWei(reputationReward / numberOfAuctions),
+      numberOfAuctions: NUM_AUCTIONS,
+      redeemEnableTime: REDEEM_ENABLE_DATE,
+      reputationReward: web3.toWei((TOTAL_REP_REWARD * AUCTION_BIDDING_RATIO) / NUM_AUCTIONS),
       tokenAddress: genTokenAddress,
       walletAddress: dao.avatar.address,
     }
   );
-
-  // await fixedReputationAllocation.initialize(
-  //   {
-  //     avatarAddress: dao.avatar.address,
-  //     redeemEnableTime: redeemEnableDate,
-  //     reputationReward: web3.toWei(reputationReward),
-  //   }
-  // );
 
   if (networkName === "Ganache") {
     await tokenMint(web3, networkName, gnoTokenAddress, "100", accounts[0]);

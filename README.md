@@ -71,10 +71,6 @@ npm run migrateContracts
   npm run script -- -n "file turkey house..." <script file name>
   ```
 
-## Nonce Errors Using Infura
-
-If you are using Infura and are experiencing "nonce too low" errors, then let the script know you are using Infura by either naming the network "kovan" in a providerConfig JSON file, or by supplying the `--i` option on the command line.
-
 ## Help
 
 After running `npm run build`, run:
@@ -82,6 +78,18 @@ After running `npm run build`, run:
 ```
 npm run help
 ```
+
+## Troubleshooting
+
+### Nothing Happens
+
+If the script returns without executing your script, make sure that a node is listening on the url you
+provided in your provider configuration file.
+
+### Nonce Errors Using Infura
+
+If you are using Infura and are experiencing "nonce too low" errors, then let the script know you are using Infura by either naming the network "kovan" in a providerConfig JSON file, or by supplying the `--i` option on the command line.
+
 
 ## Notes
 
@@ -92,9 +100,6 @@ npm run help
     ```
     npm run script yourScript
     ```
-
-* If you are using truffle-hdwallet-provider and you run a script and it connects to the provider but then returns without executing your script, make sure that a node is listening on the url you
-provided in your provider configuration file.
 
 * The default name of the method that will be executed is "run".  You may use a different method name and specify it on the command line using the "method"  parameter.
 

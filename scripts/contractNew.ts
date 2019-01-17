@@ -66,8 +66,8 @@ export const run = async (
         try {
           const response = await axios.get('https://ethgasstation.info/json/ethgasAPI.json');
           // the api gives results if 10*Gwei
-          const gasPrice = response.data.fast / 10;
-          return web3.toWei(gasPrice, 'gwei');
+          const computedGasPrice = response.data.fast / 10;
+          return web3.toWei(computedGasPrice, 'gwei');
         } catch (e) {
           return defaultGasPrice;
         }

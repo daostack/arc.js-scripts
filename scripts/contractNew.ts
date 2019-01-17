@@ -61,17 +61,17 @@ export const run = async (
   }
 
   if (gasPrice) {
-    if (gas === "estimate") {
-          ConfigService.set("gasPriceAdjustment", async (defaultGasPrice: BigNumber) => {
-          try {
-            const response = await axios.get('https://ethgasstation.info/json/ethgasAPI.json');
-            // the api gives results if 10*Gwei
-            const gasPrice = response.data.fast / 10;
-            return web3.toWei(gasPrice, 'gwei');
-          } catch (e) {
-            return defaultGasPrice;
-          }
-        });
+    if (gasPrice === "estimate") {
+      ConfigService.set("gasPriceAdjustment", async (defaultGasPrice: BigNumber) => {
+        try {
+          const response = await axios.get('https://ethgasstation.info/json/ethgasAPI.json');
+          // the api gives results if 10*Gwei
+          const computedGasPrice = response.data.fast / 10;
+          return web3.toWei(computedGasPrice, 'gwei');
+        } catch (e) {
+          return defaultGasPrice;
+        }
+      });
     }
     else {
       web3Params.gasPrice = Number.parseInt(gasPrice);

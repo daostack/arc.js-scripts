@@ -10,6 +10,15 @@ npm install
 npm run build
 ```
 
+## Start Ganache
+
+To start Ganache run these commands:
+
+```
+npm run ganache
+npm run migrateContracts
+```
+
 ## Run a Script
 
 1. Create a JavaScript file that exports a method that returns a promise that it is complete.
@@ -17,24 +26,16 @@ npm run build
  
     Two globals will also be made available: `web3` and `accounts`.
  
-    See [scripts/example.ts](https://github.com/dkent600/arc.js-scripts/blob/master/scripts/example.ts) for an example of a script.
+    See [scripts/examle.ts](https://github.com/dkent600/arc.js-scripts/blob/master/scripts/example.ts) for an example of a script.
     
-    Note that `npm run build` transpiles example.ts into the required JavaScript, putting the generated JavaScript in the "build/scripts" directory.
+    Note that `npm run build` transpiles your scripts into the required JavaScript, putting the generated JavaScript in the "build/scripts" directory.
     
-    When you refer to the script on the command line (see below), you must refer to a JavaScript file, not to TypeScript.
+2. Run a script
 
-2. Run the script
-
-    Get help on command line options:
-    
-    ```
-    npm run help
-    ```
-
-    Run the example script against a local node with default url and port:
+    Run a script against a local node with default url and port:
 
     ```
-    npm run script example
+    npm run script <script file name>
     ```
 
     It will look for your script in "build/scripts" or "build/local_scripts".
@@ -44,7 +45,7 @@ npm run build
   If you want to use the truffle-hdwallet-provider rather than a local node then you may supply the `providerConfig` option:
 
   ```
-  npm run script -- -c "/path/to/a/json/file.json" example
+  npm run script -- -c "/path/to/a/json/file.json" <script file name>
   ```
 
   The path should reference a json file containing a truffle-hdwallet-provider configuration, looking something like this:
@@ -56,17 +57,39 @@ npm run build
     "providerUrl": "https://kovan.infura.io/..."
   }</pre>
 
+  ## Use a Nmemonic and Url
+  
   Instead of using a configuration file you may pass a mnemonic with optionally a uri and port:
 
   ```
-  npm run script -- -n "file turkey house..." -u "http://127.198.0.1" -p 8890` example
+  npm run script -- -n "file turkey house..." -u "http://127.198.0.1" -p 8890` <script file name>
   ```
 
   Or with default url and port:
 
   ```
-  npm run script -- -n "file turkey house..." example
+  npm run script -- -n "file turkey house..." <script file name>
   ```
+
+## Help
+
+After running `npm run build`, run:
+
+```
+npm run help
+```
+
+## Troubleshooting
+
+### Nothing Happens
+
+If the script returns without executing your script, make sure that a node is listening on the url you
+provided in your provider configuration file.
+
+### Nonce Errors Using Infura
+
+If you are using Infura and are experiencing "nonce too low" errors, then let the script know you are using Infura by either naming the network "kovan" in a providerConfig JSON file, or by supplying the `--i` option on the command line.
+
 
 ## Notes
 
@@ -77,9 +100,6 @@ npm run build
     ```
     npm run script yourScript
     ```
-
-* If you are using truffle-hdwallet-provider and you run a script and it connects to the provider but then returns without executing your script, make sure that a node is listening on the url you
-provided in your provider configuration file.
 
 * The default name of the method that will be executed is "run".  You may use a different method name and specify it on the command line using the "method"  parameter.
 
